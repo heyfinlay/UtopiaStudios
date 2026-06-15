@@ -1,0 +1,33 @@
+import Link from "next/link";
+
+export function SiteFooter() {
+  return (
+    <footer className="border-t border-white/5 bg-[#141313] px-6 py-20 text-sm text-[#c5c7c9] md:px-20">
+      <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-8 md:flex-row">
+        <div className="flex flex-col items-center gap-3 md:items-start">
+          <p className="text-3xl font-medium tracking-[-0.02em] text-white">
+            Temporary Utopia
+          </p>
+          <p className="eyebrow">
+            © {new Date().getFullYear()} Temporary Utopia. Systems for the
+            Ephemeral.
+          </p>
+        </div>
+        <nav className="flex flex-wrap justify-center gap-8 font-mono text-[12px] font-medium uppercase tracking-[0.1em]">
+          <Link href="/privacy" className="hover:text-white">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-white">
+            Terms
+          </Link>
+          <Link href="/objection-hub" className="hover:text-white">
+            Contact
+          </Link>
+          <Link href="/objection-hub" className="hover:text-white">
+            Archive
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  );
+}
