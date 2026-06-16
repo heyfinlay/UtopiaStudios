@@ -4,10 +4,13 @@ import {
   CheckCircle2,
   ChevronDown,
   CircleHelp,
+  Clock3,
+  Gauge,
   Hourglass,
   Play,
   Smile,
   Frown,
+  Star,
   Workflow,
 } from "lucide-react";
 import { AnnouncementBar } from "@/components/ui/AnnouncementBar";
@@ -68,8 +71,8 @@ export default function CustomerJourneyRevenueSystemPage() {
   return (
     <>
       <FloatingBackground />
-      <AnnouncementBar text="Customer Journey Audit: Find where enquiries, bookings, and sales are slipping through the cracks." />
-      <SiteHeader />
+      <AnnouncementBar text="Audit slots open: find where enquiries, bookings, and sales are slipping through the cracks." />
+      <SiteHeader withAnnouncement />
       <main>
         <Hero />
         <Credibility />
@@ -90,44 +93,132 @@ export default function CustomerJourneyRevenueSystemPage() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden pb-32 pt-48 md:pb-48 md:pt-64">
-      <div className="absolute -left-24 -top-52 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.15),transparent_70%)]" />
-      <div className="absolute -right-24 bottom-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(65,105,225,.1),transparent_70%)]" />
+    <section className="relative overflow-hidden pb-20 pt-32 md:pb-28 md:pt-44">
+      <div className="absolute -left-24 -top-52 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.18),transparent_70%)]" />
+      <div className="absolute -right-24 bottom-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(65,105,225,.13),transparent_70%)]" />
+      <div className="absolute left-1/2 top-28 h-px w-[70vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-20">
-        <div className="max-w-4xl">
-          <div className="glass-soft mb-8 inline-flex rounded-full px-4 py-1.5">
-            <span className="eyebrow text-[#c8c6c5]">
-              Strategy meets ephemeral beauty
-            </span>
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,760px)_minmax(320px,1fr)] xl:gap-16">
+          <div>
+            <div className="glass-soft mb-7 inline-flex rounded-full border-cyan-100/15 px-4 py-1.5 shadow-[0_0_32px_rgba(125,220,255,0.08)]">
+              <span className="eyebrow text-[#c8c6c5]">
+                Strategy meets ephemeral beauty
+              </span>
+            </div>
+            <h1 className="display mb-7 text-[clamp(2.35rem,7vw,4.5rem)] font-semibold text-white md:text-[72px]">
+              Stop Losing Customers Between{" "}
+              <span className="text-[#c8c6c5]/60">Interest and Purchase.</span>
+            </h1>
+            <p className="mb-9 max-w-2xl text-base leading-[1.65] text-[#c5c7c9] md:text-lg">
+              Temporary Utopia helps established businesses identify and fix the
+              points where customers get confused, delayed, ignored, or lost —
+              using better digital journeys, smarter follow-up, practical
+              automation, and AI where it genuinely improves the experience.
+            </p>
+            <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-center">
+              <ButtonLink href="/apply" className="px-8 py-5">
+                Book Your Customer Journey Audit Call
+              </ButtonLink>
+              <ButtonLink href="#vsl" variant="secondary" className="px-8 py-5">
+                <Play className="h-5 w-5" />
+                Watch the Breakdown
+              </ButtonLink>
+            </div>
           </div>
-          <h1 className="display mb-8 text-[32px] font-semibold text-white md:text-[72px]">
-            Stop Losing Customers Between{" "}
-            <span className="text-[#c8c6c5]/60">Interest and Purchase.</span>
-          </h1>
-          <p className="mb-12 max-w-2xl text-lg leading-[1.6] text-[#c5c7c9]">
-            Temporary Utopia helps established businesses identify and fix the
-            points where customers get confused, delayed, ignored, or lost —
-            using better digital journeys, smarter follow-up, practical
-            automation, and AI where it genuinely improves the experience.
-          </p>
-          <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-center">
-            <ButtonLink href="/apply" className="px-8 py-5">
-              Book Your Customer Journey Audit Call
-            </ButtonLink>
-            <ButtonLink href="#vsl" variant="secondary" className="px-8 py-5">
-              <Play className="h-5 w-5" />
-              Watch the Breakdown
-            </ButtonLink>
-          </div>
+          <HeroProofPanel />
         </div>
       </div>
     </section>
   );
 }
 
+function HeroProofPanel() {
+  return (
+    <aside className="relative hidden lg:block" aria-label="Audit proof panel">
+      <div className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(125,220,255,.16),transparent_68%)] blur-2xl" />
+      <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 bg-[#141313]/55 p-6 shadow-[0_0_80px_rgba(105,190,255,0.1)]">
+        <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/50 to-transparent" />
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <p className="eyebrow text-cyan-100/80">Journey Leak Snapshot</p>
+            <p className="mt-2 text-sm text-[#c5c7c9]">
+              A practical audit view of where demand gets lost.
+            </p>
+          </div>
+          <div className="grid h-12 w-12 place-items-center rounded-full border border-cyan-100/20 bg-cyan-100/10 text-cyan-100 shadow-[0_0_28px_rgba(125,220,255,0.18)]">
+            <Gauge className="h-5 w-5" />
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-white/10 bg-white/[.035] p-4">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <span className="text-sm font-medium text-white">
+              Interest → Enquiry → Booking
+            </span>
+            <span className="rounded-full bg-cyan-100/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-cyan-100">
+              Live map
+            </span>
+          </div>
+          <div className="space-y-3">
+            {[
+              ["Response gap", "24h+ delay risk", "78%"],
+              ["Booking friction", "unclear next step", "61%"],
+              ["Follow-up loss", "manual nurture", "44%"],
+            ].map(([label, note, width]) => (
+              <div key={label}>
+                <div className="mb-2 flex items-center justify-between text-xs">
+                  <span className="text-[#e5e2e1]">{label}</span>
+                  <span className="text-[#c5c7c9]">{note}</span>
+                </div>
+                <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-cyan-200 via-white to-violet-200 shadow-[0_0_18px_rgba(125,220,255,0.3)]"
+                    style={{ width }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          {[
+            { icon: Clock3, value: "7-day", label: "roadmap" },
+            { icon: Workflow, value: "5-stage", label: "review" },
+            { icon: CheckCircle2, value: "human", label: "handoff" },
+          ].map(({ icon: Icon, value, label }) => (
+            <div
+              key={value}
+              className="rounded-2xl border border-white/10 bg-white/[.035] p-4"
+            >
+              <Icon className="mb-3 h-4 w-4 text-cyan-100/80" />
+              <p className="text-xl font-semibold tracking-[-0.03em] text-white">
+                {value}
+              </p>
+              <p className="eyebrow mt-2 text-[9px]">{label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 rounded-3xl border border-white/10 bg-[#0e0e0e]/55 p-4">
+          <div className="mb-3 flex items-center gap-1 text-cyan-100">
+            {Array.from({ length: 5 }, (_, index) => (
+              <Star key={index} className="h-3.5 w-3.5 fill-current" />
+            ))}
+          </div>
+          <p className="text-sm leading-[1.55] text-[#e5e2e1]">
+            Built for established teams already generating demand, but losing
+            momentum between the first click and the confirmed customer.
+          </p>
+        </div>
+      </GlassCard>
+    </aside>
+  );
+}
+
 function Credibility() {
   return (
-    <div className="border-y border-white/5 bg-[#0e0e0e]/50 py-12">
+    <div className="border-y border-white/5 bg-[#0e0e0e]/55 py-8 md:py-10">
       <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-8 px-6 opacity-55 grayscale transition duration-700 hover:opacity-80 hover:grayscale-0 md:px-20">
         <span className="eyebrow">Trusted by forward-thinking founders:</span>
         <div className="flex flex-wrap items-center gap-8 text-2xl font-bold tracking-[-0.04em] md:gap-12">
@@ -143,9 +234,10 @@ function Credibility() {
 
 function Vsl() {
   return (
-    <section id="vsl" className="relative py-32 md:py-48">
+    <section id="vsl" className="relative py-20 md:py-28">
+      <div className="absolute left-1/2 top-0 h-px w-[72vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-violet-300/20 to-transparent" />
       <div className="mx-auto max-w-[1440px] px-6 md:px-20">
-        <div className="mb-16 text-center">
+        <div className="mb-10 text-center md:mb-12">
           <h2 className="section-title mb-4 text-4xl font-medium text-white md:text-5xl">
             The Hidden Revenue Leak
           </h2>
@@ -154,6 +246,7 @@ function Vsl() {
           </p>
         </div>
         <GlassCard className="group relative aspect-video cursor-pointer overflow-hidden rounded-3xl border-white/10">
+          <div className="pointer-events-none absolute -inset-px z-10 rounded-3xl bg-gradient-to-r from-cyan-200/20 via-transparent to-violet-300/20 opacity-50" />
           <div
             aria-hidden="true"
             className="absolute inset-0 bg-cover bg-center transition duration-1000 group-hover:scale-105"
@@ -182,11 +275,12 @@ function Vsl() {
 
 function Letter() {
   return (
-    <section className="bg-[#0e0e0e]/30 py-32">
-      <div className="mx-auto max-w-3xl px-6">
-        <GlassCard className="rounded-3xl p-8 md:p-12">
-          <p className="eyebrow mb-8 text-[#c8c6c5]">Dear Business Owner,</p>
-          <div className="space-y-6 text-lg leading-[1.6] text-[#c5c7c9]">
+    <section className="bg-[#0e0e0e]/30 py-20 md:py-28">
+      <div className="mx-auto max-w-5xl px-6">
+        <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 p-8 shadow-[0_0_80px_rgba(105,190,255,0.08)] md:p-16 lg:p-20">
+          <div className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/40 to-transparent" />
+          <p className="eyebrow mb-10 text-[#c8c6c5]">Dear Business Owner,</p>
+          <div className="max-w-4xl space-y-8 text-xl leading-[1.68] tracking-[-0.01em] text-[#c5c7c9] md:text-2xl">
             <p>
               You’ve spent thousands on marketing, hours on product, and years
               building a reputation. Yet, every single day, people who actually
@@ -219,9 +313,9 @@ function Letter() {
 
 function LeakChecklist() {
   return (
-    <section className="relative overflow-hidden py-32 md:py-48">
+    <section className="relative overflow-hidden py-20 md:py-28">
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-20">
-        <h2 className="section-title mb-16 text-center text-4xl font-medium text-white md:text-5xl">
+        <h2 className="section-title mb-10 text-center text-4xl font-medium text-white md:mb-12 md:text-5xl">
           Is Your System Leaking?
         </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -247,7 +341,7 @@ function LeakChecklist() {
 
 function HumanFirst() {
   return (
-    <section className="bg-[#0e0e0e] py-32 md:py-48">
+    <section className="bg-[#0e0e0e] py-20 md:py-28">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-16 px-6 md:flex-row md:gap-20 md:px-20">
         <div className="w-full md:w-1/2">
           <GlassCard className="relative h-[420px] overflow-hidden rounded-3xl md:h-[500px]">
@@ -298,9 +392,9 @@ function HumanFirst() {
 
 function Mechanism() {
   return (
-    <section id="mechanism" className="py-32 md:py-48">
+    <section id="mechanism" className="py-20 md:py-28">
       <div className="mx-auto max-w-[1440px] px-6 md:px-20">
-        <h2 className="section-title mb-20 text-center text-4xl font-medium text-white md:text-5xl">
+        <h2 className="section-title mb-12 text-center text-4xl font-medium text-white md:mb-14 md:text-5xl">
           The Customer Journey Revenue System
         </h2>
         <div className="relative grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -322,7 +416,7 @@ function Mechanism() {
 
 function Comparison() {
   return (
-    <section className="bg-[#0e0e0e]/50 py-32 md:py-48">
+    <section className="bg-[#0e0e0e]/50 py-20 md:py-28">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           <div className="rounded-3xl border border-white/5 p-8 md:p-10">
@@ -362,9 +456,9 @@ function Comparison() {
 
 function Faq() {
   return (
-    <section className="py-32 md:py-48">
+    <section className="py-20 md:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <h2 className="section-title mb-16 text-center text-4xl font-medium text-white md:text-5xl">
+        <h2 className="section-title mb-10 text-center text-4xl font-medium text-white md:mb-12 md:text-5xl">
           Common Questions
         </h2>
         <div className="space-y-4">
@@ -391,7 +485,7 @@ function Faq() {
 
 function FinalCta() {
   return (
-    <section className="relative overflow-hidden py-32 text-center md:py-64">
+    <section className="relative overflow-hidden py-24 text-center md:py-40">
       <div className="absolute left-1/2 top-0 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.12),transparent_70%)] opacity-60" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-6">
         <h2 className="display mb-8 text-4xl font-semibold text-white md:text-[72px]">

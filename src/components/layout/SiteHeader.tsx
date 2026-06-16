@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { cn } from "@/lib/utils/cn";
 
 const links = [
   ["Systems", "/customer-journey-revenue-system"],
@@ -12,16 +13,54 @@ const links = [
   ["Studio", "/"],
 ];
 
-export function SiteHeader({ compact = false }: { compact?: boolean }) {
+export function SiteHeader({
+  compact = false,
+  withAnnouncement = false,
+}: {
+  compact?: boolean;
+  withAnnouncement?: boolean;
+}) {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const movingDown = currentY > lastScrollY.current;
+
+      setScrolled(currentY > 24);
+      setHidden(movingDown && currentY > 180 && !open);
+      lastScrollY.current = Math.max(currentY, 0);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
+
   return (
-    <header className="fixed left-0 top-11 z-50 w-full transition-transform duration-300">
-      <div className="glass mx-auto flex h-20 max-w-[1440px] items-center justify-between rounded-none border-x-0 border-t-0 bg-[#141313]/40 px-6 backdrop-blur-md md:px-20">
+    <header
+      className={cn(
+        "fixed left-0 z-50 w-full px-3 transition-all duration-300 ease-out md:px-6",
+        hidden && "-translate-y-[130%] opacity-0",
+        scrolled ? "top-3" : withAnnouncement ? "top-8 sm:top-9" : "top-3",
+      )}
+    >
+      <div
+        className={cn(
+          "glass mx-auto flex h-16 max-w-[1440px] items-center justify-between border-white/10 bg-[#141313]/58 px-4 backdrop-blur-2xl md:h-[72px] md:px-10",
+          scrolled
+            ? "rounded-full shadow-[0_16px_80px_rgba(0,0,0,0.38),0_0_44px_rgba(105,190,255,0.08)]"
+            : "rounded-none border-x-0 border-t-0",
+        )}
+      >
         <Link
           href="/"
-          className="flex items-center gap-3 text-[15px] font-semibold tracking-[-.03em] text-[#e5e2e1] sm:text-2xl"
+          className="flex items-center gap-3 text-[15px] font-semibold tracking-[-.03em] text-[#e5e2e1] sm:text-xl md:text-2xl"
         >
-          <span className="grid h-9 w-9 place-items-center rounded-sm border border-white/20 font-mono text-xs">
+          <span className="grid h-8 w-8 place-items-center rounded-sm border border-cyan-100/25 bg-white/[.03] font-mono text-[11px] shadow-[0_0_24px_rgba(125,220,255,0.08)] md:h-9 md:w-9 md:text-xs">
             TU
           </span>
           <span>Temporary Utopia</span>
@@ -32,7 +71,7 @@ export function SiteHeader({ compact = false }: { compact?: boolean }) {
               <Link
                 key={href}
                 href={href}
-                className="transition hover:text-[#ffffff]"
+                className="transition hover:text-[#ffffff] hover:drop-shadow-[0_0_12px_rgba(125,220,255,0.35)]"
               >
                 {label}
               </Link>
@@ -55,7 +94,7 @@ export function SiteHeader({ compact = false }: { compact?: boolean }) {
         </button>
       </div>
       {open && (
-        <nav className="glass absolute left-6 right-6 top-[5.5rem] flex flex-col rounded-3xl p-4 text-sm md:hidden">
+        <nav className="glass absolute left-4 right-4 top-[4.75rem] flex flex-col rounded-3xl p-4 text-sm md:hidden">
           {links.map(([label, href]) => (
             <Link
               key={href}

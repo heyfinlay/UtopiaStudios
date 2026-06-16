@@ -1,12 +1,24 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 export function AnnouncementBar({ text }: { text: string }) {
   return (
-    <div className="relative z-[60] flex w-full justify-center border-b border-white/5 bg-[#2a2a2a] px-6 py-3 text-center font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-[#c5c7c9] sm:text-xs">
-      <Link href="/apply" className="inline-flex items-center gap-2">
-        {text}
-        <ArrowRight className="hidden h-3.5 w-3.5 sm:block" />
+    <div
+      data-announcement-bar
+      className="relative z-[60] flex h-8 w-full items-center justify-center overflow-hidden border-b border-cyan-200/10 bg-[#1b1919]/95 px-4 text-center font-mono text-[9px] font-medium uppercase tracking-[0.18em] text-[#d8d5d4] shadow-[0_1px_24px_rgba(105,190,255,0.08)] sm:h-9 sm:text-[10px]"
+    >
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-200/45 to-transparent" />
+      <Link
+        href="/apply"
+        className="inline-flex max-w-full items-center gap-2 whitespace-nowrap"
+      >
+        <span className="hidden h-1.5 w-1.5 rounded-full bg-cyan-200 shadow-[0_0_16px_rgba(125,220,255,0.9)] sm:inline-block" />
+        <Sparkles className="h-3 w-3 shrink-0 text-cyan-100/80" />
+        <span className="truncate">{text}</span>
+        <span className="hidden text-cyan-100/70 sm:inline">
+          Book your audit
+        </span>
+        <ArrowRight className="h-3 w-3 shrink-0 text-cyan-100/80" />
       </Link>
     </div>
   );
