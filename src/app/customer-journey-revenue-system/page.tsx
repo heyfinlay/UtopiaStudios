@@ -143,7 +143,7 @@ export default function CustomerJourneyRevenueSystemPage() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden pb-20 pt-32 md:pb-28 md:pt-44">
+    <section className="relative overflow-hidden pb-20 pt-24 sm:pt-28 md:pb-28 md:pt-44">
       <div className="absolute -left-24 -top-52 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.18),transparent_70%)]" />
       <div className="absolute -right-24 bottom-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(65,105,225,.13),transparent_70%)]" />
       <div className="absolute left-1/2 top-28 h-px w-[70vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent" />
