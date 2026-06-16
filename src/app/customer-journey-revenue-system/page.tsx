@@ -4,7 +4,9 @@ import {
   CheckCircle2,
   ChevronDown,
   CircleHelp,
+  ClipboardCheck,
   Clock3,
+  FileSearch,
   Gauge,
   Hourglass,
   Play,
@@ -52,18 +54,63 @@ const systemSteps = [
   ["Amplify", "We layer in AI to scale your capacity without overhead."],
 ];
 
+const auditDeliverables = [
+  "Customer Journey Map",
+  "Revenue Leak Report",
+  "Priority Fix Matrix",
+  "Tool, CRM, and automation review",
+  "Follow-up and handover recommendations",
+  "Implementation roadmap",
+  "Audit delivery call",
+];
+
+const fitIndustries = [
+  "Dental",
+  "Clinics",
+  "Home Services",
+  "Consultants",
+  "Premium Local",
+  "Wellness",
+  "Med Spas",
+  "Fitness",
+];
+
+const sampleFindings = [
+  ["Response lag", "Good-fit enquiries wait 24+ hours before a real reply."],
+  [
+    "Booking drop-off",
+    "The next step is split across forms, DMs, email, and manual reminders.",
+  ],
+  [
+    "CRM blind spot",
+    "Lead source, status, and follow-up owner are not visible in one place.",
+  ],
+  [
+    "Reactivation gap",
+    "Old enquiries and no-shows are not being followed up with a clear sequence.",
+  ],
+];
+
 const faqs = [
   [
     "How long does an audit take?",
-    "The initial deep-dive audit is completed within 7 business days. You’ll receive a full technical and strategic roadmap highlighting every leak.",
+    "The paid audit is typically completed within 5-7 business days after the right access and information are provided.",
+  ],
+  [
+    "What happens on the free fit call?",
+    "We check whether your business has enough existing demand, customer value, and journey complexity to justify a paid audit. If not, we will say so.",
+  ],
+  [
+    "What happens after the fit call?",
+    "If there is a fit, we will recommend the next best step with scope, price, timeline, and expectations before you decide. Implementation is separate and only scoped after the audit identifies the highest-priority fixes.",
   ],
   [
     "Do we need to switch our CRM?",
     "Not necessarily. We prefer to build on top of your existing stack unless it is fundamentally broken. We work across common CRM, booking, payment, email, SMS, and automation tools.",
   ],
   [
-    "What is the ROI?",
-    "We do not guarantee commercial results. The audit is designed to find clear, measurable opportunities to recover demand that is already being generated.",
+    "Do you guarantee results?",
+    "No responsible studio can guarantee a commercial result. The audit is designed to find measurable opportunities and prioritise fixes, not promise revenue out of thin air.",
   ],
 ];
 
@@ -79,6 +126,9 @@ export default function CustomerJourneyRevenueSystemPage() {
         <Vsl />
         <Letter />
         <LeakChecklist />
+        <LeakMath />
+        <AuditDeliverables />
+        <SampleAuditPreview />
         <HumanFirst />
         <Mechanism />
         <Comparison />
@@ -110,14 +160,27 @@ function Hero() {
               <span className="text-[#c8c6c5]/60">Interest and Purchase.</span>
             </h1>
             <p className="mb-9 max-w-2xl text-base leading-[1.65] text-[#c5c7c9] md:text-lg">
-              Temporary Utopia helps established businesses identify and fix the
-              points where customers get confused, delayed, ignored, or lost —
-              using better digital journeys, smarter follow-up, practical
-              automation, and AI where it genuinely improves the experience.
+              A 5-7 business day Customer Journey Audit for established service
+              businesses already getting enquiries, bookings, traffic, or sales
+              conversations, but losing people before they become customers.
             </p>
+            <div className="mb-9 grid max-w-2xl gap-3 text-sm text-[#e5e2e1] sm:grid-cols-3">
+              {[
+                "Map the journey",
+                "Find priority leaks",
+                "Leave with a fix plan",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-white/10 bg-white/[.035] px-4 py-3"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
             <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-center">
               <ButtonLink href="/apply" className="px-8 py-5">
-                Book Your Customer Journey Audit Call
+                Apply for the Free Fit Call
               </ButtonLink>
               <ButtonLink href="#vsl" variant="secondary" className="px-8 py-5">
                 <Play className="h-5 w-5" />
@@ -142,7 +205,7 @@ function HeroProofPanel() {
           <div>
             <p className="eyebrow text-cyan-100/80">Journey Leak Snapshot</p>
             <p className="mt-2 text-sm text-[#c5c7c9]">
-              A practical audit view of where demand gets lost.
+              A practical diagnostic view of where demand gets lost.
             </p>
           </div>
           <div className="grid h-12 w-12 place-items-center rounded-full border border-cyan-100/20 bg-cyan-100/10 text-cyan-100 shadow-[0_0_28px_rgba(125,220,255,0.18)]">
@@ -183,9 +246,9 @@ function HeroProofPanel() {
 
         <div className="mt-5 grid grid-cols-3 gap-3">
           {[
-            { icon: Clock3, value: "7-day", label: "roadmap" },
-            { icon: Workflow, value: "5-stage", label: "review" },
-            { icon: CheckCircle2, value: "human", label: "handoff" },
+            { icon: Clock3, value: "5-7 day", label: "audit" },
+            { icon: FileSearch, value: "clear", label: "diagnostic" },
+            { icon: CheckCircle2, value: "optional", label: "build" },
           ].map(({ icon: Icon, value, label }) => (
             <div
               key={value}
@@ -207,8 +270,8 @@ function HeroProofPanel() {
             ))}
           </div>
           <p className="text-sm leading-[1.55] text-[#e5e2e1]">
-            Built for established teams already generating demand, but losing
-            momentum between the first click and the confirmed customer.
+            Built for established service businesses already generating demand,
+            but losing momentum before the customer is confirmed.
           </p>
         </div>
       </GlassCard>
@@ -218,14 +281,25 @@ function HeroProofPanel() {
 
 function Credibility() {
   return (
-    <div className="border-y border-white/5 bg-[#0e0e0e]/55 py-8 md:py-10">
-      <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-8 px-6 opacity-55 grayscale transition duration-700 hover:opacity-80 hover:grayscale-0 md:px-20">
-        <span className="eyebrow">Trusted by forward-thinking founders:</span>
-        <div className="flex flex-wrap items-center gap-8 text-2xl font-bold tracking-[-0.04em] md:gap-12">
-          <span>FORMA.</span>
-          <span>NEXUS_</span>
-          <span>ELEVATE</span>
-          <span>STRATUM</span>
+    <div className="border-y border-white/5 bg-[#0e0e0e]/55 py-5 md:py-6">
+      <div className="mx-auto grid max-w-[1440px] gap-4 px-6 md:grid-cols-[auto_1fr] md:items-center md:px-20">
+        <span className="eyebrow shrink-0 text-[#c8c6c5]/70">
+          Strong fit for:
+        </span>
+        <div className="relative min-w-0 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+          <div className="fit-marquee-track flex w-max items-center py-1">
+            {[0, 1].map((loopIndex) => (
+              <div
+                key={loopIndex}
+                aria-hidden={loopIndex === 1}
+                className="flex shrink-0 items-center gap-8 pr-12 text-2xl font-bold tracking-[-0.04em] text-[#c5c7c9]/75 grayscale transition duration-700 hover:text-white hover:grayscale-0 md:gap-12"
+              >
+                {fitIndustries.map((industry) => (
+                  <span key={`${loopIndex}-${industry}`}>{industry}</span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -264,7 +338,7 @@ function Vsl() {
           </div>
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#141313]/90 to-transparent p-6 md:p-8">
             <p className="text-xl font-medium tracking-[-0.01em] text-white md:text-2xl">
-              Case Study: Recovering 34% of “Lost” Leads in 60 Days
+              Audit Preview: How a messy journey becomes a priority fix list
             </p>
           </div>
         </GlassCard>
@@ -334,6 +408,166 @@ function LeakChecklist() {
             </GlassCard>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function LeakMath() {
+  return (
+    <section className="relative overflow-hidden bg-[#0e0e0e]/45 py-20 md:py-28">
+      <div className="absolute left-1/2 top-0 h-px w-[72vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/25 to-transparent" />
+      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 md:grid-cols-[0.95fr_1.05fr] md:px-20">
+        <div>
+          <p className="eyebrow text-cyan-100/80">The commercial maths</p>
+          <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
+            The leak only has to be small to be expensive.
+          </h2>
+          <p className="mt-6 max-w-xl text-lg leading-[1.65] text-[#c5c7c9]">
+            The audit does not assume you need more traffic. It asks whether the
+            demand you already paid for is being handled quickly, clearly, and
+            consistently enough to become revenue.
+          </p>
+        </div>
+        <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 p-6 md:p-8">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(125,220,255,.16),transparent_70%)]" />
+          <div className="relative">
+            <div className="mb-7 flex items-center gap-3">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-white">
+                <FileSearch className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="eyebrow text-[#c8c6c5]">Example scenario</p>
+                <p className="mt-1 text-sm text-[#c5c7c9]">
+                  Conservative, illustrative maths. Not a guarantee.
+                </p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {[
+                ["Monthly enquiries", "80"],
+                ["Average customer value", "$2,500"],
+                ["Good-fit enquiries lost to friction", "10%"],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[.035] px-4 py-3"
+                >
+                  <span className="text-[#c5c7c9]">{label}</span>
+                  <span className="text-xl font-semibold text-white">
+                    {value}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 rounded-3xl border border-cyan-100/20 bg-cyan-100/[.045] p-5">
+              <p className="eyebrow text-cyan-100/80">Potential leakage</p>
+              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
+                $20,000 / month
+              </p>
+              <p className="mt-3 text-sm leading-6 text-[#c5c7c9]">
+                Before any ad spend increase, a serious owner needs to know
+                whether this kind of leakage exists in their current journey.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+      </div>
+    </section>
+  );
+}
+
+function AuditDeliverables() {
+  return (
+    <section className="py-20 md:py-28">
+      <div className="mx-auto max-w-[1440px] px-6 md:px-20">
+        <div className="mb-10 flex flex-col justify-between gap-6 md:mb-14 md:flex-row md:items-end">
+          <div>
+            <p className="eyebrow text-cyan-100/80">What you receive</p>
+            <h2 className="section-title mt-5 max-w-3xl text-4xl font-medium text-white md:text-5xl">
+              A tangible diagnostic, not a vague strategy chat.
+            </h2>
+          </div>
+          <p className="max-w-md text-base leading-7 text-[#c5c7c9]">
+            The paid audit turns the current journey into a clear map of what is
+            happening, where people drop off, and what should be fixed first.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {auditDeliverables.map((deliverable, index) => (
+            <GlassCard
+              key={deliverable}
+              className="rounded-3xl p-6 transition hover:border-cyan-100/25 hover:bg-white/[.045]"
+            >
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <ClipboardCheck className="h-5 w-5 text-cyan-100/80" />
+                <span className="font-mono text-xs text-[#c5c7c9]">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <p className="text-lg font-medium tracking-[-0.01em] text-white">
+                {deliverable}
+              </p>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SampleAuditPreview() {
+  return (
+    <section className="relative overflow-hidden py-20 md:py-28">
+      <div className="absolute -left-40 top-1/3 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.12),transparent_70%)]" />
+      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 md:grid-cols-[0.9fr_1.1fr] md:px-20">
+        <div>
+          <p className="eyebrow text-cyan-100/80">Example audit output</p>
+          <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
+            Here is the kind of thing we look for.
+          </h2>
+          <p className="mt-6 text-lg leading-8 text-[#c5c7c9]">
+            Until there are public case studies, the page should still show the
+            shape of the work. These are common findings we would validate
+            against the real journey, tools, data, and team process.
+          </p>
+          <ButtonLink href="/apply" className="mt-8">
+            Apply for the Free Fit Call
+          </ButtonLink>
+        </div>
+        <GlassCard className="rounded-[2rem] p-5 md:p-7">
+          <div className="mb-5 flex items-center justify-between gap-4 border-b border-white/10 pb-5">
+            <div>
+              <p className="eyebrow text-[#c8c6c5]">Sample priority matrix</p>
+              <p className="mt-2 text-sm text-[#c5c7c9]">
+                What a business owner needs: plain language, priority, and next
+                action.
+              </p>
+            </div>
+            <Gauge className="h-6 w-6 text-cyan-100/80" />
+          </div>
+          <div className="space-y-3">
+            {sampleFindings.map(([title, body], index) => (
+              <div
+                key={title}
+                className="grid gap-3 rounded-2xl border border-white/10 bg-white/[.035] p-4 md:grid-cols-[auto_1fr_auto] md:items-center"
+              >
+                <span className="font-mono text-xs text-cyan-100/80">
+                  P{index + 1}
+                </span>
+                <div>
+                  <h3 className="font-medium text-white">{title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-[#c5c7c9]">
+                    {body}
+                  </p>
+                </div>
+                <span className="rounded-full border border-cyan-100/20 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-cyan-100">
+                  Review
+                </span>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
       </div>
     </section>
   );
@@ -425,7 +659,10 @@ function Comparison() {
               This is for you if...
             </h3>
             <ul className="space-y-6 text-[#c5c7c9]">
-              <li>• You have an established business with existing flow.</li>
+              <li>
+                • You already receive enquiries, bookings, traffic, or sales
+                conversations.
+              </li>
               <li>• You sell high-value services or products ($2k+).</li>
               <li>
                 • You know you have “leaky” processes but lack the time to fix
@@ -492,11 +729,12 @@ function FinalCta() {
           Ready to stop the leaks?
         </h2>
         <p className="mx-auto mb-12 max-w-2xl text-lg leading-[1.6] text-[#c5c7c9]">
-          Secure your Customer Journey Audit today and get a clear, actionable
-          plan to recapture lost revenue and scale your operations.
+          Start with the free fit call. If the audit makes commercial sense,
+          you will know the recommended scope, price, timeline, and next step
+          before deciding.
         </p>
         <ButtonLink href="/apply" className="px-12 py-6 text-lg">
-          Book Your Audit Now
+          Apply for the Free Fit Call
         </ButtonLink>
         <p className="eyebrow mt-8">Only 4 audit slots available per month</p>
       </div>

@@ -117,6 +117,15 @@ select:focus-visible {
   line-height: 1.2;
 }
 
+.fit-marquee-track {
+  animation: fit-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.fit-marquee-track:hover {
+  animation-play-state: paused;
+}
+
 .scroll-shimmer-card {
   position: relative;
   isolation: isolate;
@@ -302,6 +311,15 @@ select:focus-visible {
   }
 }
 
+@keyframes fit-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .input {
   width: 100%;
   border: 0;
@@ -371,6 +389,10 @@ select.input option {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .fit-marquee-track {
+    animation: none;
+    transform: none;
   }
   *,
   *::before,

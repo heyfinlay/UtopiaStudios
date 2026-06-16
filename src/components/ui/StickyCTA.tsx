@@ -18,7 +18,7 @@ export function StickyCTA() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#141313]/90 p-3 backdrop-blur-xl md:hidden">
       <ButtonLink href="/apply" className="w-full">
-        Book Your Audit Call
+        Apply for the Free Fit Call
       </ButtonLink>
     </div>
   );
