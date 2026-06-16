@@ -322,7 +322,7 @@ function LeakChecklist() {
           {leakCards.map(({ icon: Icon, title, body }) => (
             <GlassCard
               key={title}
-              className="flex flex-col items-start gap-6 rounded-3xl p-10 transition hover:bg-white/[.05]"
+              className="scroll-shimmer-card flex flex-col items-start gap-6 rounded-3xl p-10 transition hover:bg-white/[.05]"
             >
               <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-white">
                 <Icon className="h-5 w-5" />

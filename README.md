@@ -32,6 +32,23 @@ The working premise:
 - Lucide icons
 - Placeholder integration layer for CRM, webhook, email, calendar, and Stripe flows
 
+## Brand Assets
+
+Current logo asset:
+
+```text
+public/brand/temporary-utopia-symbol-white-bold.png
+```
+
+This is the bold white Temporary Utopia symbol used for compact brand moments. It is derived from the source `UTOPIA_SYMBOL_WHITE.png` and slightly strengthened for small web placements.
+
+Current usage:
+
+- Header brand link, replacing the earlier `TU` placeholder.
+- Footer brand lockup beside the Temporary Utopia name.
+
+There is not currently a dedicated text-logo asset. The wordmark is rendered as live text so it stays sharp, accessible, and easy to adjust while the broader brand system evolves.
+
 ## Running Locally
 
 ```bash

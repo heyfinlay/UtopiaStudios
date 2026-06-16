@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { cn } from "@/lib/utils/cn";
 
 const links = [
@@ -60,9 +61,7 @@ export function SiteHeader({
           href="/"
           className="flex items-center gap-3 text-[15px] font-semibold tracking-[-.03em] text-[#e5e2e1] sm:text-xl md:text-2xl"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-sm border border-cyan-100/25 bg-white/[.03] font-mono text-[11px] shadow-[0_0_24px_rgba(125,220,255,0.08)] md:h-9 md:w-9 md:text-xs">
-            TU
-          </span>
+          <BrandMark eager className="h-10 w-10 md:h-11 md:w-11" />
           <span>Temporary Utopia</span>
         </Link>
         {!compact && (

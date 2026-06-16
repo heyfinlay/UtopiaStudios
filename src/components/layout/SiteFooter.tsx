@@ -1,13 +1,17 @@
 import Link from "next/link";
+import { BrandMark } from "@/components/ui/BrandMark";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-white/5 bg-[#141313] px-6 py-20 text-sm text-[#c5c7c9] md:px-20">
       <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-8 md:flex-row">
         <div className="flex flex-col items-center gap-3 md:items-start">
-          <p className="text-3xl font-medium tracking-[-0.02em] text-white">
-            Temporary Utopia
-          </p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row md:items-start">
+            <BrandMark className="h-14 w-14" />
+            <p className="text-3xl font-medium tracking-[-0.02em] text-white">
+              Temporary Utopia
+            </p>
+          </div>
           <p className="eyebrow">
             © {new Date().getFullYear()} Temporary Utopia. Systems for the
             Ephemeral.
