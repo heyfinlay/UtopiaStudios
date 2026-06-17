@@ -76,6 +76,11 @@ npm run lint
 npm run build
 ```
 
+## Deployment
+
+See `DEPLOYMENT.md` for Vercel settings, required Supabase environment
+variables, and the preflight checklist.
+
 ## Page Map
 
 ### `/`
