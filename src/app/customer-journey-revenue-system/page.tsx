@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   BotOff,
   CheckCircle2,
@@ -561,16 +562,13 @@ function HumanFirst() {
       <div className="mx-auto flex max-w-[1440px] flex-col items-center gap-16 px-6 md:flex-row md:gap-20 md:px-20">
         <div className="w-full md:w-1/2">
           <GlassCard className="relative h-[420px] overflow-hidden rounded-3xl md:h-[500px]">
-            <div className="absolute inset-0 grid place-items-center p-12 text-center">
-              <div>
-                <span className="eyebrow mb-4 block text-[#c8c6c5]">
-                  System Philosophy
-                </span>
-                <div className="select-none text-5xl font-extrabold tracking-[-0.04em] text-white/10 md:text-6xl">
-                  HUMAN FIRST
-                </div>
-              </div>
-            </div>
+            <Image
+              src="/images/chris-laptop-2.webp"
+              alt="Person reviewing a customer journey dashboard on a laptop"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
           </GlassCard>
         </div>
         <div className="w-full md:w-1/2">
