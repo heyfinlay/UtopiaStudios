@@ -13,8 +13,8 @@ export function SiteFooter() {
             </p>
           </div>
           <p className="eyebrow">
-            © {new Date().getFullYear()} Temporary Utopia. Systems for the
-            Ephemeral.
+            © 2026 Temporary Utopia. Creative systems for trust, conversion,
+            and follow-through.
           </p>
         </div>
         <nav className="flex flex-wrap justify-center gap-8 font-mono text-[12px] font-medium uppercase tracking-[0.1em]">
@@ -23,12 +23,6 @@ export function SiteFooter() {
           </Link>
           <Link href="/terms" className="hover:text-white">
             Terms
-          </Link>
-          <Link href="/objection-hub" className="hover:text-white">
-            Contact
-          </Link>
-          <Link href="/objection-hub" className="hover:text-white">
-            Archive
           </Link>
         </nav>
       </div>
