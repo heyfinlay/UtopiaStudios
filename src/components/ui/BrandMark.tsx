@@ -21,9 +21,8 @@ export function BrandMark({
         alt=""
         width={1080}
         height={985}
-        unoptimized
         preload={eager}
-        loading="eager"
+        loading={eager ? "eager" : "lazy"}
         sizes="44px"
         className="h-full w-full scale-[1.08] object-contain"
       />

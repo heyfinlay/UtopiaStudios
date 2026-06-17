@@ -8,10 +8,9 @@ import { BrandMark } from "@/components/ui/BrandMark";
 import { cn } from "@/lib/utils/cn";
 
 const links = [
-  ["Systems", "/customer-journey-revenue-system"],
-  ["Process", "/customer-journey-revenue-system#mechanism"],
+  ["Systems", "/"],
+  ["Process", "/#mechanism"],
   ["Portfolio", "/objection-hub"],
-  ["Studio", "/"],
 ];
 
 export function SiteHeader({
@@ -25,20 +24,49 @@ export function SiteHeader({
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const lastScrollY = useRef(0);
+  const frame = useRef<number | null>(null);
+  const hiddenRef = useRef(false);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    hiddenRef.current = hidden;
+  }, [hidden]);
+
+  useEffect(() => {
+    scrolledRef.current = scrolled;
+  }, [scrolled]);
+
+  useEffect(() => {
+    const updateHeader = () => {
       const currentY = window.scrollY;
       const movingDown = currentY > lastScrollY.current;
+      const nextScrolled = currentY > 24;
+      const nextHidden = movingDown && currentY > 180 && !open;
 
-      setScrolled(currentY > 24);
-      setHidden(movingDown && currentY > 180 && !open);
+      if (nextScrolled !== scrolledRef.current) {
+        setScrolled(nextScrolled);
+      }
+      if (nextHidden !== hiddenRef.current) {
+        setHidden(nextHidden);
+      }
       lastScrollY.current = Math.max(currentY, 0);
+      frame.current = null;
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (frame.current === null) {
+        frame.current = window.requestAnimationFrame(updateHeader);
+      }
+    };
+
+    updateHeader();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame.current !== null) {
+        window.cancelAnimationFrame(frame.current);
+      }
+    };
   }, [open]);
 
   return (

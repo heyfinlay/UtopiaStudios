@@ -1,16 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 
 export function StickyCTA() {
   const [visible, setVisible] = useState(false);
+  const visibleRef = useRef(false);
+  const frame = useRef<number | null>(null);
 
   useEffect(() => {
-    const update = () => setVisible(window.scrollY > 680);
+    visibleRef.current = visible;
+  }, [visible]);
+
+  useEffect(() => {
+    const update = () => {
+      const nextVisible = window.scrollY > 680;
+
+      if (nextVisible !== visibleRef.current) {
+        setVisible(nextVisible);
+      }
+
+      frame.current = null;
+    };
+    const onScroll = () => {
+      if (frame.current === null) {
+        frame.current = window.requestAnimationFrame(update);
+      }
+    };
+
     update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame.current !== null) {
+        window.cancelAnimationFrame(frame.current);
+      }
+    };
   }, []);
 
   if (!visible) return null;

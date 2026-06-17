@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
+  ArrowUpRight,
   BotOff,
   CheckCircle2,
   ChevronDown,
@@ -91,6 +92,13 @@ const sampleFindings = [
   ],
 ];
 
+const proofPoints = [
+  "Sharper positioning for service brands that need to feel premium and credible",
+  "Landing pages and funnels built around real customer decisions",
+  "Customer journey audits that turn messy touchpoints into a clear fix list",
+  "Automation that supports staff without making the experience feel robotic",
+];
+
 const faqs = [
   [
     "How long does an audit take?",
@@ -127,6 +135,7 @@ export default function CustomerJourneyRevenueSystemPage() {
         <Letter />
         <LeakChecklist />
         <LeakMath />
+        <SystemWorking />
         <AuditDeliverables />
         <SampleAuditPreview />
         <HumanFirst />
@@ -304,10 +313,12 @@ function Vsl() {
         </div>
         <GlassCard className="group relative aspect-video cursor-pointer overflow-hidden rounded-3xl border-white/10">
           <div className="pointer-events-none absolute -inset-px z-10 rounded-3xl bg-gradient-to-r from-cyan-200/20 via-transparent to-violet-300/20 opacity-50" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-center transition duration-1000 group-hover:scale-105"
-            style={{ backgroundImage: "url('/images/vsl-reference.png')" }}
+          <Image
+            src="/images/vsl-reference.png"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 1280px"
+            className="object-cover transition duration-700 group-hover:scale-[1.025]"
           />
           <div className="absolute inset-0 bg-[#141313]/60 backdrop-blur-[2px]" />
           <div className="absolute inset-0 flex items-center justify-center">
@@ -453,6 +464,49 @@ function LeakMath() {
                 whether this kind of leakage exists in their current journey.
               </p>
             </div>
+          </div>
+        </GlassCard>
+      </div>
+    </section>
+  );
+}
+
+function SystemWorking() {
+  return (
+    <section className="py-20 md:py-28">
+      <div className="mx-auto max-w-[1440px] px-6 md:px-20">
+        <GlassCard className="grid gap-10 rounded-[2rem] p-7 sm:p-10 lg:grid-cols-[1.15fr_.85fr]">
+          <div>
+            <p className="eyebrow">What changes when the system is working</p>
+            <h2 className="section-title mt-5 text-3xl font-semibold text-white sm:text-5xl">
+              The work is designed to make trust easier to earn.
+            </h2>
+            <p className="mt-6 max-w-2xl leading-7 text-[#adb4c0]">
+              Most businesses do not lose opportunities because nobody is
+              interested. They lose them in the quiet gaps: unclear
+              positioning, weak booking paths, slow follow-up, forgotten leads,
+              and customer journeys that feel harder than they need to.
+            </p>
+            <p className="mt-5 max-w-2xl leading-7 text-[#adb4c0]">
+              Temporary Utopia brings the brand, offer, website, and follow-up
+              system into one clearer path. The business feels more considered,
+              the next step becomes easier to take, and good demand is less
+              likely to drift away.
+            </p>
+            <ButtonLink href="/apply" className="mt-7">
+              Apply for the Free Fit Call
+            </ButtonLink>
+          </div>
+          <div className="flex flex-col justify-end gap-3">
+            {proofPoints.map((item) => (
+              <div
+                key={item}
+                className="flex items-center justify-between gap-5 border-b border-white/10 py-4 text-sm text-[#e5e2e1]"
+              >
+                <span>{item}</span>
+                <ArrowUpRight className="h-4 w-4 shrink-0 text-[#817cff]" />
+              </div>
+            ))}
           </div>
         </GlassCard>
       </div>
