@@ -1,14 +1,14 @@
 export const homepage = {
   hero: {
-    title: "Better systems for the moment between interest and action.",
-    body: "Temporary Utopia designs practical customer journeys that help established businesses respond faster, remove friction, and turn more existing demand into action.",
+    title: "Temporary Utopia",
+    body: "A creative systems studio shaped by 1980s aerospace, high-trust marketing, and the belief that every customer journey should feel precise, calm, and memorable.",
   },
   capabilities: [
-    "Journey strategy and mapping",
-    "Conversion-focused pages and funnels",
-    "CRM and follow-up systems",
-    "Booking and checkout improvement",
-    "Practical automation and AI",
-    "Retention and reactivation journeys",
+    "Creative direction with a technical operating system behind it",
+    "Customer journey strategy for service businesses with real demand",
+    "Conversion pages, booking paths, CRM structure, and follow-up systems",
+    "Marketing assets that make the brand feel considered before the sale",
+    "Practical automation and AI used to improve human response speed",
+    "Retention and reactivation journeys that keep customers in orbit",
   ],
 };

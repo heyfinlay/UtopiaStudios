@@ -6,6 +6,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
 import { sendToCRM, sendToWebhook } from "@/lib/integrations";
+import {
+  AverageValueSlider,
+  defaultAverageCustomerValue,
+} from "@/components/forms/AverageValueSlider";
 
 const schema = z.object({
   businessName: z.string().min(2, "Required"),
@@ -33,8 +37,14 @@ export function AuditIntakeForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<Values>({ resolver: zodResolver(schema) });
+  } = useForm<Values>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      averageValue: defaultAverageCustomerValue,
+    },
+  });
   const input = (
     name: keyof Values,
     label: string,
@@ -86,11 +96,13 @@ export function AuditIntakeForm() {
           {input("businessName", "Business name *", "Business name")}
           {input("website", "Website *", "https://")}
           {input("customerType", "Main customer type *", "Who you serve")}
-          {input(
-            "averageValue",
-            "Average customer value *",
-            "Approximate value",
-          )}
+          <AverageValueSlider
+            name="averageValue"
+            label="Average customer value *"
+            register={register}
+            setValue={setValue}
+            errors={errors}
+          />
           {input("bestSeller", "Best-selling offer *", "Offer name")}
           {input("profitableOffer", "Most profitable offer *", "Offer name")}
         </div>

@@ -11,6 +11,10 @@ import {
   sendToEmailPlatform,
   sendToWebhook,
 } from "@/lib/integrations";
+import {
+  AverageValueSlider,
+  defaultAverageCustomerValue,
+} from "@/components/forms/AverageValueSlider";
 
 const schema = z.object({
   name: z.string().min(2, "Please enter your name."),
@@ -161,6 +165,7 @@ export function ApplicationForm() {
     register,
     handleSubmit,
     getValues,
+    setValue,
     setError,
     clearErrors,
     formState: { errors, isSubmitting },
@@ -170,6 +175,7 @@ export function ApplicationForm() {
       tools: [],
       aiTools: [],
       aiToolsOther: "",
+      averageValue: defaultAverageCustomerValue,
       marketingOptIn: false,
     },
   });
@@ -360,11 +366,13 @@ export function ApplicationForm() {
               "Select a range",
               ["Under 20", "20–50", "51–100", "101–250", "251–500", "500+"],
             )}
-            {field(
-              "averageValue",
-              "Average customer value *",
-              "e.g. $2,500 AUD",
-            )}
+            <AverageValueSlider
+              name="averageValue"
+              label="Average customer value *"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+            />
             {selectField(
               "runningAds",
               "Are you currently running ads? *",

@@ -61,18 +61,17 @@ const auditDeliverables = [
   "Tool, CRM, and automation review",
   "Follow-up and handover recommendations",
   "Implementation roadmap",
-  "Audit delivery call",
 ];
 
 const fitIndustries = [
-  "Dental",
-  "Clinics",
-  "Home Services",
+  "Dental clinics",
+  "Cosmetic clinics",
+  "Wellness studios",
+  "Home service operators",
+  "Boutique fitness",
   "Consultants",
-  "Premium Local",
-  "Wellness",
-  "Med Spas",
-  "Fitness",
+  "Advisory firms",
+  "Premium local services",
 ];
 
 const sampleFindings = [
@@ -146,15 +145,12 @@ function Hero() {
     <section className="relative overflow-hidden pb-20 pt-24 sm:pt-28 md:pb-28 md:pt-44">
       <div className="absolute -left-24 -top-52 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.18),transparent_70%)]" />
       <div className="absolute -right-24 bottom-0 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(65,105,225,.13),transparent_70%)]" />
-      <div className="absolute left-1/2 top-28 h-px w-[70vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-20">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,760px)_minmax(320px,1fr)] xl:gap-16">
           <div>
-            <div className="glass-soft mb-7 inline-flex rounded-full border-cyan-100/15 px-4 py-1.5 shadow-[0_0_32px_rgba(125,220,255,0.08)]">
-              <span className="eyebrow text-[#c8c6c5]">
-                Strategy meets ephemeral beauty
-              </span>
-            </div>
+            <p className="eyebrow mb-7 text-cyan-100/80">
+              Customer Journey Revenue System
+            </p>
             <h1 className="display mb-7 text-[clamp(2.35rem,7vw,4.5rem)] font-semibold text-white md:text-[72px]">
               Stop Losing Customers Between{" "}
               <span className="text-[#c8c6c5]/60">Interest and Purchase.</span>
@@ -164,20 +160,6 @@ function Hero() {
               businesses already getting enquiries, bookings, traffic, or sales
               conversations, but losing people before they become customers.
             </p>
-            <div className="mb-9 grid max-w-2xl gap-3 text-sm text-[#e5e2e1] sm:grid-cols-3">
-              {[
-                "Map the journey",
-                "Find priority leaks",
-                "Leave with a fix plan",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-white/10 bg-white/[.035] px-4 py-3"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
             <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-center">
               <ButtonLink href="/apply" className="px-8 py-5">
                 Apply for the Free Fit Call
@@ -493,7 +475,7 @@ function AuditDeliverables() {
             happening, where people drop off, and what should be fixed first.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {auditDeliverables.map((deliverable, index) => (
             <GlassCard
               key={deliverable}
