@@ -18,6 +18,9 @@ export function SiteFooter() {
           </p>
         </div>
         <nav className="flex flex-wrap justify-center gap-8 font-mono text-[12px] font-medium uppercase tracking-[0.1em]">
+          <Link href="/contact" className="hover:text-white">
+            Contact
+          </Link>
           <Link href="/privacy" className="hover:text-white">
             Privacy
           </Link>

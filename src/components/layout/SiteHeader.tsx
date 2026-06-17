@@ -11,6 +11,7 @@ const links = [
   ["Systems", "/"],
   ["Process", "/#mechanism"],
   ["Portfolio", "/objection-hub"],
+  ["Contact", "/contact"],
 ];
 
 export function SiteHeader({
