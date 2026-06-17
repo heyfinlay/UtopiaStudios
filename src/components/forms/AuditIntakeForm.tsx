@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
-import { sendToCRM, sendToWebhook } from "@/lib/integrations";
+import { sendToWebhook, submitLeadForm } from "@/lib/integrations";
 import {
   AverageValueSlider,
   defaultAverageCustomerValue,
@@ -87,7 +87,10 @@ export function AuditIntakeForm() {
       className="space-y-12"
       onSubmit={handleSubmit(async (values) => {
         console.info("Audit intake", values);
-        await Promise.all([sendToCRM(values), sendToWebhook(values)]);
+        await Promise.all([
+          submitLeadForm("audit_intake", values),
+          sendToWebhook(values),
+        ]);
         setDone(true);
       })}
     >

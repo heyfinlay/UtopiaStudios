@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import {
-  sendToCRM,
   sendToEmailPlatform,
   sendToWebhook,
+  submitLeadForm,
 } from "@/lib/integrations";
 import {
   AverageValueSlider,
@@ -188,7 +188,7 @@ export function ApplicationForm() {
     setSubmitted(values);
     console.info("Customer Journey Audit application", values);
     await Promise.all([
-      sendToCRM(values),
+      submitLeadForm("application", values),
       sendToWebhook(values),
       values.marketingOptIn ? sendToEmailPlatform(values) : Promise.resolve(),
     ]);
