@@ -24,7 +24,7 @@ export default function ApplyPage() {
               Apply for a Customer Journey Audit Call
             </h1>
             <p className="mt-6 max-w-lg leading-7 text-[#aab1bd]">
-              Answer one focused section at a time so we can understand the
+              Answer one focused question at a time so we can understand the
               business, the current journey, and the tools already in play.
             </p>
             <ul className="mt-8 space-y-4 text-sm text-[#c0c6cf]">
