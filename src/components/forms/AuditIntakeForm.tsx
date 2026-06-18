@@ -12,12 +12,14 @@ import {
   defaultAverageCustomerValue,
 } from "@/components/forms/AverageValueSlider";
 
+const averageValueSchema = z.number({ error: "Required" }).positive("Required");
+
 const schema = z.object({
   businessName: z.string().optional(),
   website: z.string().optional(),
   offers: z.string().optional(),
   customerType: z.string().optional(),
-  averageValue: z.string().min(1, "Required"),
+  averageValue: averageValueSchema,
   bestSeller: z.string().optional(),
   profitableOffer: z.string().optional(),
   sources: z.string().optional(),
@@ -172,6 +174,7 @@ export function AuditIntakeForm() {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<Values>({
@@ -233,6 +236,7 @@ export function AuditIntakeForm() {
         <AverageValueSlider
           name="averageValue"
           label={currentQuestion.title}
+          control={control}
           register={register}
           setValue={setValue}
           errors={errors}

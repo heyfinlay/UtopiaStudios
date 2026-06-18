@@ -1,7 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import type {
+  Control,
   FieldErrors,
   FieldPath,
   FieldValues,
@@ -9,47 +11,146 @@ import type {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 
-const valueSteps = [
-  100, 250, 500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 7500,
-  10000, 15000, 20000, 30000, 50000, 75000, 100000,
+const sliderMinValue = 50;
+const sliderMaxValue = 1_000_000;
+const sliderMinPosition = 0;
+const sliderMaxPosition = 100;
+
+const sliderTickLabels = [
+  "$50",
+  "$100",
+  "$500",
+  "$1k",
+  "$5k",
+  "$20k",
+  "$100k",
+  "$1m+",
 ];
 
-const defaultIndex = valueSteps.indexOf(2500);
+export const defaultAverageCustomerValue = 2500;
 
-export const defaultAverageCustomerValue = formatAverageValue(
-  valueSteps[defaultIndex],
-);
-
-function formatAverageValue(value: number) {
+export function formatAverageValue(value: number) {
   return `$${new Intl.NumberFormat("en-AU").format(value)}`;
+}
+
+export function parseAverageCustomerValue(value: unknown) {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const rawValue = value.trim().toLowerCase();
+
+  if (!rawValue) {
+    return null;
+  }
+
+  const suffix = rawValue.endsWith("k")
+    ? "k"
+    : rawValue.endsWith("m")
+      ? "m"
+      : null;
+  const normalizedValue = rawValue
+    .replace(/aud/g, "")
+    .replace(/\$/g, "")
+    .replace(/,/g, "")
+    .replace(/\s/g, "")
+    .replace(/[km]$/, "");
+  const numericValue = Number(normalizedValue);
+
+  if (!Number.isFinite(numericValue)) {
+    return null;
+  }
+
+  if (suffix === "k") {
+    return numericValue * 1000;
+  }
+
+  if (suffix === "m") {
+    return numericValue * 1_000_000;
+  }
+
+  return numericValue;
+}
+
+export function sliderPositionToValue(position: number) {
+  const boundedPosition = Math.max(
+    sliderMinPosition,
+    Math.min(sliderMaxPosition, position),
+  );
+  const ratio = boundedPosition / sliderMaxPosition;
+  const minLog = Math.log(sliderMinValue);
+  const maxLog = Math.log(sliderMaxValue);
+
+  return Math.round(Math.exp(minLog + ratio * (maxLog - minLog)));
+}
+
+export function valueToSliderPosition(value: number) {
+  if (!Number.isFinite(value) || value <= sliderMinValue) {
+    return sliderMinPosition;
+  }
+
+  if (value >= sliderMaxValue) {
+    return sliderMaxPosition;
+  }
+
+  const minLog = Math.log(sliderMinValue);
+  const maxLog = Math.log(sliderMaxValue);
+
+  return Math.round(
+    ((Math.log(value) - minLog) / (maxLog - minLog)) * sliderMaxPosition,
+  );
 }
 
 export function AverageValueSlider<TValues extends FieldValues>({
   name,
   label,
+  control,
   register,
   setValue,
   errors,
 }: {
   name: FieldPath<TValues>;
   label: string;
+  control: Control<TValues>;
   register: UseFormRegister<TValues>;
   setValue: UseFormSetValue<TValues>;
   errors: FieldErrors<TValues>;
 }) {
   const id = useId();
   const error = errors[name];
-  const [index, setIndex] = useState(defaultIndex);
-  const formattedValue = formatAverageValue(valueSteps[index]);
-  const updateValue = (nextIndex: number) => {
-    const boundedIndex = Math.max(0, Math.min(valueSteps.length - 1, nextIndex));
-    const nextValue = formatAverageValue(valueSteps[boundedIndex]);
+  const watchedValue = useWatch({
+    control,
+    name,
+    defaultValue: defaultAverageCustomerValue as PathValue<TValues, typeof name>,
+  });
+  const numericValue = useMemo(
+    () => parseAverageCustomerValue(watchedValue),
+    [watchedValue],
+  );
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputValue, setInputValue] = useState(() =>
+    formatAverageValue(defaultAverageCustomerValue),
+  );
+  const sliderPosition =
+    numericValue === null
+      ? sliderMinPosition
+      : valueToSliderPosition(numericValue);
+  const formattedValue =
+    numericValue === null ? "" : formatAverageValue(Math.round(numericValue));
+  const sliderStyle = {
+    "--slider-progress": `${sliderPosition}%`,
+  } as CSSProperties;
 
-    setIndex(boundedIndex);
-    setValue(name, nextValue as PathValue<TValues, typeof name>, {
+  const updateFormValue = (nextValue: number | null, shouldValidate = false) => {
+    setValue(name, (nextValue ?? Number.NaN) as PathValue<TValues, typeof name>, {
       shouldDirty: true,
-      shouldValidate: true,
+      shouldValidate,
     });
   };
 
@@ -59,47 +160,62 @@ export function AverageValueSlider<TValues extends FieldValues>({
       <input type="hidden" {...register(name)} />
       <div className={`value-slider ${error ? "input-error" : ""}`}>
         <div className="value-slider__display" id={`${id}-value`}>
-          <span>Approx.</span>
-          <strong>{formattedValue}</strong>
+          <span>APPROX.</span>
+          <input
+            id={id}
+            type="text"
+            inputMode="decimal"
+            autoComplete="off"
+            aria-label={label}
+            className="value-slider__input"
+            value={isEditing ? inputValue : formattedValue}
+            placeholder="$5,000"
+            onFocus={() => {
+              setIsEditing(true);
+              setInputValue(formattedValue);
+            }}
+            onChange={(event) => {
+              const nextInputValue = event.currentTarget.value;
+
+              setInputValue(nextInputValue);
+              updateFormValue(parseAverageCustomerValue(nextInputValue));
+            }}
+            onBlur={() => {
+              const parsedValue = parseAverageCustomerValue(inputValue);
+
+              setIsEditing(false);
+              updateFormValue(parsedValue, true);
+              setInputValue(
+                parsedValue === null
+                  ? ""
+                  : formatAverageValue(Math.round(parsedValue)),
+              );
+            }}
+          />
           <span>AUD</span>
         </div>
         <input
-          id={id}
           type="range"
           data-testid={`${name}-range`}
-          min={0}
-          max={valueSteps.length - 1}
-          value={index}
+          min={sliderMinPosition}
+          max={sliderMaxPosition}
+          step={1}
+          value={sliderPosition}
           aria-describedby={`${id}-value`}
           className="value-slider__range"
+          style={sliderStyle}
           onChange={(event) => {
-            updateValue(Number(event.currentTarget.value));
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-              event.preventDefault();
-              updateValue(index + 1);
-            }
-            if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
-              event.preventDefault();
-              updateValue(index - 1);
-            }
-            if (event.key === "Home") {
-              event.preventDefault();
-              updateValue(0);
-            }
-            if (event.key === "End") {
-              event.preventDefault();
-              updateValue(valueSteps.length - 1);
-            }
+            const nextValue = sliderPositionToValue(Number(event.currentTarget.value));
+
+            setIsEditing(false);
+            updateFormValue(nextValue, true);
+            setInputValue(formatAverageValue(nextValue));
           }}
         />
         <div className="value-slider__scale" aria-hidden="true">
-          <span>$100</span>
-          <span>$1k</span>
-          <span>$5k</span>
-          <span>$20k</span>
-          <span>$100k+</span>
+          {sliderTickLabels.map((tickLabel) => (
+            <span key={tickLabel}>{tickLabel}</span>
+          ))}
         </div>
       </div>
       {error && <span className="form-error">{String(error.message)}</span>}

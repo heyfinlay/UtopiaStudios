@@ -16,6 +16,10 @@ import {
   defaultAverageCustomerValue,
 } from "@/components/forms/AverageValueSlider";
 
+const averageValueSchema = z
+  .number({ error: "Enter a positive customer value." })
+  .positive("Enter a positive customer value.");
+
 const schema = z.object({
   name: z.string().min(2, "Please enter your name."),
   email: z.email("Please enter a valid email."),
@@ -31,7 +35,7 @@ const schema = z.object({
   industry: z.string().min(2, "Please enter your industry."),
   mainAction: z.string().min(1, "Select the main customer action."),
   monthlyVolume: z.string().min(1, "Select an approximate volume."),
-  averageValue: z.string().min(1, "Enter an approximate customer value."),
+  averageValue: averageValueSchema,
   tools: z.array(z.string()),
   aiTools: z.array(z.string()),
   aiToolsOther: z.string().optional(),
@@ -271,6 +275,7 @@ export function ApplicationForm() {
     register,
     handleSubmit,
     getValues,
+    control,
     setValue,
     setError,
     clearErrors,
@@ -393,6 +398,7 @@ export function ApplicationForm() {
         <AverageValueSlider
           name="averageValue"
           label={fieldLabels.averageValue ?? currentQuestion.title}
+          control={control}
           register={register}
           setValue={setValue}
           errors={errors}
