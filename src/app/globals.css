@@ -468,6 +468,69 @@ select.input option {
   white-space: nowrap;
 }
 
+.math-slider__range {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2rem;
+  margin-top: 1rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.math-slider__range:focus-visible {
+  outline: 2px solid rgba(207, 246, 255, 0.8);
+  outline-offset: 4px;
+}
+
+.math-slider__range::-webkit-slider-runnable-track {
+  height: 0.46rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #e5e2e1 var(--slider-progress),
+    rgba(255, 255, 255, 0.1) var(--slider-progress)
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.math-slider__range::-moz-range-track {
+  height: 0.46rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #e5e2e1 var(--slider-progress),
+    rgba(255, 255, 255, 0.1) var(--slider-progress)
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.math-slider__range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-top: -0.45rem;
+  border: 2px solid #141313;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(125, 220, 255, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.38);
+}
+
+.math-slider__range::-moz-range-thumb {
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid #141313;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(125, 220, 255, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.38);
+}
+
 @media (max-width: 767px) {
   .display {
     letter-spacing: -0.035em;

@@ -24,6 +24,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { CommercialMathsCalculator } from "@/components/sections/CommercialMathsCalculator";
 
 export const metadata: Metadata = {
   title: "Customer Journey Revenue System",
@@ -411,8 +412,8 @@ function LeakMath() {
   return (
     <section className="relative overflow-hidden bg-[#0e0e0e]/45 py-20 md:py-28">
       <div className="absolute left-1/2 top-0 h-px w-[72vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/25 to-transparent" />
-      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 md:grid-cols-[0.95fr_1.05fr] md:px-20">
-        <div>
+      <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-6 md:grid-cols-[0.95fr_1.05fr] md:px-20">
+        <div className="mx-auto w-full max-w-xl">
           <p className="eyebrow text-cyan-100/80">The commercial maths</p>
           <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
             The leak only has to be small to be expensive.
@@ -423,49 +424,7 @@ function LeakMath() {
             consistently enough to become revenue.
           </p>
         </div>
-        <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 p-6 md:p-8">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(125,220,255,.16),transparent_70%)]" />
-          <div className="relative">
-            <div className="mb-7 flex items-center gap-3">
-              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-white">
-                <FileSearch className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="eyebrow text-[#c8c6c5]">Example scenario</p>
-                <p className="mt-1 text-sm text-[#c5c7c9]">
-                  Conservative, illustrative maths. Not a guarantee.
-                </p>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {[
-                ["Monthly enquiries", "80"],
-                ["Average customer value", "$2,500"],
-                ["Good-fit enquiries lost to friction", "10%"],
-              ].map(([label, value]) => (
-                <div
-                  key={label}
-                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[.035] px-4 py-3"
-                >
-                  <span className="text-[#c5c7c9]">{label}</span>
-                  <span className="text-xl font-semibold text-white">
-                    {value}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 rounded-3xl border border-cyan-100/20 bg-cyan-100/[.045] p-5">
-              <p className="eyebrow text-cyan-100/80">Potential leakage</p>
-              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em] text-white md:text-5xl">
-                $20,000 / month
-              </p>
-              <p className="mt-3 text-sm leading-6 text-[#c5c7c9]">
-                Before any ad spend increase, a serious owner needs to know
-                whether this kind of leakage exists in their current journey.
-              </p>
-            </div>
-          </div>
-        </GlassCard>
+        <CommercialMathsCalculator />
       </div>
     </section>
   );
