@@ -548,6 +548,20 @@ Recommended events:
 - `paid_audit_checkout_completed`
 - `audit_intake_submitted`
 
+### Discord Lead Notifications
+
+The `/apply` form posts to a server-side API route that saves the application
+lead and sends a Discord notification.
+
+Set this environment variable in Vercel before using the production form:
+
+```bash
+DISCORD_LEAD_WEBHOOK_URL=
+```
+
+Do not expose this value with a `NEXT_PUBLIC_` prefix. It must stay server-side
+only.
+
 ### 3. Email Platform
 
 Replace `sendToEmailPlatform`.

@@ -7,11 +7,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import {
-  sendToEmailPlatform,
-  sendToWebhook,
-  submitLeadForm,
-} from "@/lib/integrations";
-import {
   AverageValueSlider,
   defaultAverageCustomerValue,
 } from "@/components/forms/AverageValueSlider";
@@ -283,6 +278,7 @@ const fieldLabels: Partial<Record<FieldName, string>> = {
 export function ApplicationForm() {
   const router = useRouter();
   const [submitted, setSubmitted] = useState<Values | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
   const {
     register,
@@ -310,14 +306,42 @@ export function ApplicationForm() {
   const progress = ((stepIndex + 1) / questions.length) * 100;
 
   const onSubmit = async (values: Values) => {
-    setSubmitted(values);
-    console.info("Customer Journey Audit application", values);
-    await Promise.all([
-      submitLeadForm("application", values),
-      sendToWebhook(values),
-      values.marketingOptIn ? sendToEmailPlatform(values) : Promise.resolve(),
-    ]);
-    window.setTimeout(() => router.push("/book"), 900);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch("/api/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...values,
+          sourcePath:
+            typeof window === "undefined"
+              ? "/apply"
+              : `${window.location.pathname}${window.location.search}`,
+        }),
+      });
+
+      if (!response.ok) {
+        const body = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+
+        setSubmitError(
+          body?.error ??
+            "Something went wrong while submitting your application. Please try again.",
+        );
+        return;
+      }
+
+      setSubmitted(values);
+      window.setTimeout(() => router.push("/book"), 900);
+    } catch {
+      setSubmitError(
+        "Could not reach the application server. Please check your connection and try again.",
+      );
+    }
   };
 
   if (submitted) {
@@ -557,6 +581,12 @@ export function ApplicationForm() {
       >
         {questionControl()}
       </div>
+
+      {submitError && (
+        <p className="rounded-2xl border border-[#ffb4ab]/25 bg-[#ffb4ab]/10 px-4 py-3 text-sm leading-6 text-[#ffd8d2]">
+          {submitError}
+        </p>
+      )}
 
       <div className="flex items-center justify-between gap-3 border-t border-white/[.08] pt-8">
         <button
