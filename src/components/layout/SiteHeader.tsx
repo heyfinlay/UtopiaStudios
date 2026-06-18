@@ -80,9 +80,9 @@ export function SiteHeader({
     >
       <div
         className={cn(
-          "glass mx-auto flex h-16 max-w-[1440px] items-center justify-between border-white/10 bg-[#141313]/58 px-4 backdrop-blur-2xl md:h-[72px] md:px-10",
+          "glass mx-auto flex h-16 max-w-[1360px] items-center justify-between border-white/[.08] bg-[#111010]/48 px-4 backdrop-blur-2xl md:h-[72px] md:px-10",
           scrolled
-            ? "rounded-full shadow-[0_16px_80px_rgba(0,0,0,0.38),0_0_44px_rgba(105,190,255,0.08)]"
+            ? "rounded-full shadow-[0_16px_80px_rgba(0,0,0,0.34),0_0_44px_rgba(105,190,255,0.07)]"
             : "rounded-none border-x-0 border-t-0",
         )}
       >

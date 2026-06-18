@@ -247,6 +247,22 @@ const questions: Question[] = [
   },
 ];
 
+const fieldLabels: Partial<Record<FieldName, string>> = {
+  aiToolsOther: "Additional notes",
+  averageValue: "Average customer value",
+  biggestProblem: "Journey friction",
+  businessName: "Company / brand name",
+  email: "Email address",
+  hasCrm: "CRM status",
+  industry: "Industry",
+  mainAction: "Main action",
+  monthlyVolume: "Monthly volume",
+  name: "Your name",
+  phone: "Phone number",
+  runningAds: "Ad status",
+  website: "Website URL",
+};
+
 export function ApplicationForm() {
   const router = useRouter();
   const [submitted, setSubmitted] = useState<Values | null>(null);
@@ -340,7 +356,9 @@ export function ApplicationForm() {
         type={type}
         {...register(name)}
         placeholder={placeholder}
-        className={`input ${errors[name] ? "input-error" : ""}`}
+        className={`input application-input ${
+          errors[name] ? "input-error" : ""
+        }`}
       />
       {errors[name] && (
         <span className="form-error">{String(errors[name]?.message)}</span>
@@ -374,7 +392,7 @@ export function ApplicationForm() {
       return (
         <AverageValueSlider
           name="averageValue"
-          label={currentQuestion.title}
+          label={fieldLabels.averageValue ?? currentQuestion.title}
           register={register}
           setValue={setValue}
           errors={errors}
@@ -383,12 +401,16 @@ export function ApplicationForm() {
     }
 
     if (currentQuestion.control === "select") {
-      const name = fieldName as "mainAction" | "monthlyVolume" | "runningAds" | "hasCrm";
+      const name = fieldName as
+        | "mainAction"
+        | "monthlyVolume"
+        | "runningAds"
+        | "hasCrm";
 
       return (
         <label>
-          <span className="form-label">{currentQuestion.title}</span>
-          <select {...register(name)} className="input">
+          <span className="form-label">{fieldLabels[name]}</span>
+          <select {...register(name)} className="input application-input">
             <option value="">Select one</option>
             {currentQuestion.options?.map((value) => (
               <option key={value}>{value}</option>
@@ -404,11 +426,15 @@ export function ApplicationForm() {
     if (currentQuestion.control === "textarea") {
       return (
         <label>
-          <span className="form-label">{currentQuestion.title}</span>
+          <span className="form-label">
+            {fieldLabels[fieldName] ?? currentQuestion.title}
+          </span>
           <textarea
             {...register(fieldName)}
             rows={5}
-            className={`input resize-y ${errors[fieldName] ? "input-error" : ""}`}
+            className={`input application-input resize-y ${
+              errors[fieldName] ? "input-error" : ""
+            }`}
             placeholder={currentQuestion.placeholder}
           />
           {errors[fieldName] && (
@@ -460,34 +486,34 @@ export function ApplicationForm() {
 
     return field(
       fieldName,
-      currentQuestion.title,
+      fieldLabels[fieldName] ?? currentQuestion.title,
       currentQuestion.placeholder ?? "",
       currentQuestion.inputType ?? "text",
     );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10" noValidate>
       <div>
-        <div className="mb-5 flex items-center justify-between gap-4">
+        <div className="mb-6 flex items-start justify-between gap-5">
           <div>
             <p className="eyebrow text-cyan-100/80">
               {currentQuestion.eyebrow} of {questions.length}
             </p>
-            <h2 className="section-title mt-3 text-3xl font-semibold text-white md:text-4xl">
+            <h2 className="section-title mt-4 max-w-2xl text-[2.1rem] font-semibold leading-[1.08] text-white md:text-[2.8rem]">
               {currentQuestion.title}
             </h2>
           </div>
-          <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-[#c5c7c9]">
+          <span className="mt-0.5 shrink-0 rounded-full border border-white/10 bg-white/[.035] px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[#d9d7dc] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
             {stepIndex + 1}/{questions.length}
           </span>
         </div>
-        <p className="max-w-2xl text-sm leading-6 text-[#aab1bd]">
+        <p className="max-w-2xl text-[0.95rem] leading-7 text-[#b4b8c0]">
           {currentQuestion.description}
         </p>
-        <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-white/10">
+        <div className="mt-9 h-1 overflow-hidden rounded-full bg-white/[.075]">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-cyan-200 via-white to-violet-200 transition-all duration-300"
+            className="h-full rounded-full bg-gradient-to-r from-cyan-100 via-[#f0eef2] to-violet-200 shadow-[0_0_18px_rgba(196,210,255,0.3)] transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -495,17 +521,17 @@ export function ApplicationForm() {
 
       <div
         key={currentQuestion.fields.join("-")}
-        className="rounded-3xl border border-white/10 bg-white/[.025] p-5"
+        className="application-input-module"
       >
         {questionControl()}
       </div>
 
-      <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center justify-between gap-3 border-t border-white/[.08] pt-8">
         <button
           type="button"
           onClick={() => setStepIndex((current) => Math.max(current - 1, 0))}
           disabled={stepIndex === 0 || isSubmitting}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-[#e5e2e1] transition hover:bg-white/[.05] disabled:cursor-not-allowed disabled:opacity-35"
+          className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/[.11] bg-white/[.025] px-6 text-sm font-semibold text-[#d8d6d5] transition hover:-translate-y-0.5 hover:bg-white/[.05] disabled:translate-y-0 disabled:cursor-not-allowed disabled:border-white/[.06] disabled:bg-white/[.015] disabled:text-[#777a80]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
@@ -514,7 +540,7 @@ export function ApplicationForm() {
           <button
             disabled={isSubmitting}
             type="submit"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#e5e2e1] px-6 py-4 text-sm font-semibold text-[#1c1b1b] transition hover:brightness-110 disabled:opacity-50"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#e8e5e2] px-7 text-sm font-bold text-[#151414] shadow-[0_14px_34px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(255,255,255,0.75)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:translate-y-0 disabled:opacity-50"
           >
             {isSubmitting ? "Submitting..." : "Continue to Booking"}
             <ArrowRight className="h-4 w-4" />
@@ -524,7 +550,7 @@ export function ApplicationForm() {
             type="button"
             onClick={goNext}
             disabled={isSubmitting}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#e5e2e1] px-6 py-4 text-sm font-semibold text-[#1c1b1b] transition hover:brightness-110 disabled:opacity-50"
+            className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#e8e5e2] px-7 text-sm font-bold text-[#151414] shadow-[0_14px_34px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(255,255,255,0.75)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:translate-y-0 disabled:opacity-50"
           >
             Continue
             <ArrowRight className="h-4 w-4" />
