@@ -15,10 +15,17 @@ import {
   AverageValueSlider,
   defaultAverageCustomerValue,
 } from "@/components/forms/AverageValueSlider";
+import {
+  defaultMonthlyVolume,
+  MonthlyVolumeSlider,
+} from "@/components/forms/MonthlyVolumeSlider";
 
 const averageValueSchema = z
   .number({ error: "Enter a positive customer value." })
   .positive("Enter a positive customer value.");
+const monthlyVolumeSchema = z
+  .number({ error: "Enter a positive monthly volume." })
+  .positive("Enter a positive monthly volume.");
 
 const schema = z.object({
   name: z.string().min(2, "Please enter your name."),
@@ -34,7 +41,7 @@ const schema = z.object({
     ),
   industry: z.string().min(2, "Please enter your industry."),
   mainAction: z.string().min(1, "Select the main customer action."),
-  monthlyVolume: z.string().min(1, "Select an approximate volume."),
+  monthlyVolume: monthlyVolumeSchema,
   averageValue: averageValueSchema,
   tools: z.array(z.string()),
   aiTools: z.array(z.string()),
@@ -94,7 +101,14 @@ type Question = {
   validationSchema: z.ZodType;
   placeholder?: string;
   inputType?: "text" | "url" | "email" | "tel";
-  control?: "input" | "textarea" | "select" | "slider" | "checkboxGrid" | "confirm";
+  control?:
+    | "input"
+    | "textarea"
+    | "select"
+    | "slider"
+    | "volumeSlider"
+    | "checkboxGrid"
+    | "confirm";
   options?: string[];
   checkboxOptions?: string[];
 };
@@ -173,8 +187,7 @@ const questions: Question[] = [
     description: "A rough range is enough for the fit check.",
     fields: ["monthlyVolume"],
     validationSchema: schema.pick({ monthlyVolume: true }),
-    control: "select",
-    options: ["Under 20", "20-50", "51-100", "101-250", "251-500", "500+"],
+    control: "volumeSlider",
   },
   {
     eyebrow: "Question 9",
@@ -286,6 +299,7 @@ export function ApplicationForm() {
       tools: [],
       aiTools: [],
       aiToolsOther: "",
+      monthlyVolume: defaultMonthlyVolume,
       averageValue: defaultAverageCustomerValue,
       marketingOptIn: false,
     },
@@ -406,10 +420,22 @@ export function ApplicationForm() {
       );
     }
 
+    if (currentQuestion.control === "volumeSlider") {
+      return (
+        <MonthlyVolumeSlider
+          name="monthlyVolume"
+          label={fieldLabels.monthlyVolume ?? currentQuestion.title}
+          control={control}
+          register={register}
+          setValue={setValue}
+          errors={errors}
+        />
+      );
+    }
+
     if (currentQuestion.control === "select") {
       const name = fieldName as
         | "mainAction"
-        | "monthlyVolume"
         | "runningAds"
         | "hasCrm";
 
