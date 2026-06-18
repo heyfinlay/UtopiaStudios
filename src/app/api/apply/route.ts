@@ -4,6 +4,31 @@ import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
+function normalizeWebsite(value: unknown) {
+  if (typeof value !== "string") {
+    return value;
+  }
+
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue || /^https?:\/\//i.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  return `https://${trimmedValue}`;
+}
+
+function normalizeApplyPayload(payload: unknown) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return payload;
+  }
+
+  return {
+    ...payload,
+    website: normalizeWebsite((payload as { website?: unknown }).website),
+  };
+}
+
 const applySubmissionSchema = z.object({
   name: z.string().min(2),
   email: z.email(),
@@ -12,7 +37,7 @@ const applySubmissionSchema = z.object({
   website: z
     .string()
     .optional()
-    .refine((value) => !value || /^https?:\/\//.test(value)),
+    .refine((value) => !value || /^https?:\/\/[^\s.]+\.[^\s]+$/.test(value)),
   industry: z.string().min(2),
   mainAction: z.string().min(1),
   monthlyVolume: z.number().positive(),
@@ -99,6 +124,7 @@ async function sendDiscordLeadNotification(lead: ApplySubmission) {
           fields: [
             { name: "Name", value: fieldValue(lead.name), inline: true },
             { name: "Email", value: fieldValue(lead.email), inline: true },
+            { name: "Phone", value: fieldValue(lead.phone), inline: true },
             {
               name: "Business",
               value: fieldValue(lead.businessName),
@@ -140,8 +166,9 @@ async function sendDiscordLeadNotification(lead: ApplySubmission) {
 }
 
 export async function POST(request: Request) {
+  const payload = normalizeApplyPayload(await request.json().catch(() => null));
   const parsed = applySubmissionSchema.safeParse(
-    await request.json().catch(() => null),
+    payload,
   );
 
   if (!parsed.success) {

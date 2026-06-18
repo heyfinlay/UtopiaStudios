@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import type { FocusEvent, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
@@ -22,6 +23,16 @@ const monthlyVolumeSchema = z
   .number({ error: "Enter a positive monthly volume." })
   .positive("Enter a positive monthly volume.");
 
+function normalizeWebsite(value: string | undefined) {
+  const trimmedValue = value?.trim() ?? "";
+
+  if (!trimmedValue || /^https?:\/\//i.test(trimmedValue)) {
+    return trimmedValue;
+  }
+
+  return `https://${trimmedValue}`;
+}
+
 const schema = z.object({
   name: z.string().min(2, "Please enter your name."),
   email: z.email("Please enter a valid email."),
@@ -31,8 +42,8 @@ const schema = z.object({
     .string()
     .optional()
     .refine(
-      (v) => !v || /^https?:\/\//.test(v),
-      "Include https:// in the website URL.",
+      (v) => !v || /^(https?:\/\/)?[^\s.]+\.[^\s]+$/.test(v),
+      "Enter a valid website domain.",
     ),
   industry: z.string().min(2, "Please enter your industry."),
   mainAction: z.string().min(1, "Select the main customer action."),
@@ -75,16 +86,8 @@ const aiToolOptions = [
   "Gemini",
   "Perplexity",
   "OpenAI API",
-  "OpenRouter",
   "Microsoft Copilot",
-  "Notion AI",
-  "Midjourney",
-  "Runway",
-  "Higgsfield",
-  "Canva AI",
   "Cursor",
-  "Zapier AI",
-  "Make AI",
   "Other",
 ];
 
@@ -307,6 +310,10 @@ export function ApplicationForm() {
 
   const onSubmit = async (values: Values) => {
     setSubmitError(null);
+    const normalizedValues = {
+      ...values,
+      website: normalizeWebsite(values.website),
+    };
 
     try {
       const response = await fetch("/api/apply", {
@@ -315,7 +322,7 @@ export function ApplicationForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...values,
+          ...normalizedValues,
           sourcePath:
             typeof window === "undefined"
               ? "/apply"
@@ -335,7 +342,7 @@ export function ApplicationForm() {
         return;
       }
 
-      setSubmitted(values);
+      setSubmitted(normalizedValues);
       window.setTimeout(() => router.push("/book"), 900);
     } catch {
       setSubmitError(
@@ -356,6 +363,13 @@ export function ApplicationForm() {
 
   const goNext = () => {
     clearErrors(currentQuestion.fields);
+
+    if (currentQuestion.fields.includes("website")) {
+      setValue("website", normalizeWebsite(getValues("website")), {
+        shouldDirty: true,
+      });
+    }
+
     const values = getValues();
     const questionValues = currentQuestion.fields.reduce<Partial<Values>>(
       (acc, fieldName) => ({
@@ -387,6 +401,23 @@ export function ApplicationForm() {
     setStepIndex((current) => Math.min(current + 1, questions.length - 1));
   };
 
+  const handleFormKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    const target = event.target;
+
+    if (
+      event.key !== "Enter" ||
+      event.shiftKey ||
+      isLastStep ||
+      !(target instanceof HTMLElement) ||
+      target.tagName === "TEXTAREA"
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    goNext();
+  };
+
   const field = (
     name: FieldName,
     label: string,
@@ -399,6 +430,18 @@ export function ApplicationForm() {
         type={type}
         {...register(name)}
         placeholder={placeholder}
+        {...(name === "website"
+          ? {
+              onBlur: (event: FocusEvent<HTMLInputElement>) => {
+                const normalizedWebsite = normalizeWebsite(event.currentTarget.value);
+                event.currentTarget.value = normalizedWebsite;
+                setValue("website", normalizedWebsite, {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                });
+              },
+            }
+          : {})}
         className={`input application-input ${
           errors[name] ? "input-error" : ""
         }`}
@@ -549,7 +592,12 @@ export function ApplicationForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10" noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={handleFormKeyDown}
+      className="space-y-10"
+      noValidate
+    >
       <div>
         <div className="mb-6 flex items-start justify-between gap-5">
           <div>
