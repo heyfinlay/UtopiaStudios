@@ -107,8 +107,11 @@ export function SiteHeader({
           </nav>
         )}
         <div className="hidden md:block">
-          <ButtonLink href="/apply" className="min-h-10 px-6 py-2.5 text-sm">
-            Book Audit
+          <ButtonLink
+            href="/#revenue-leak-map-form"
+            className="min-h-10 px-6 py-2.5 text-sm"
+          >
+            Request a Free Leak Map
           </ButtonLink>
         </div>
         <button
@@ -133,8 +136,8 @@ export function SiteHeader({
               {label}
             </Link>
           ))}
-          <ButtonLink href="/apply" className="mt-4">
-            Book an audit call
+          <ButtonLink href="/#revenue-leak-map-form" className="mt-4">
+            Request a Free Leak Map
           </ButtonLink>
         </nav>
       )}

@@ -8,8 +8,9 @@ import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { ApplicationForm } from "@/components/forms/ApplicationForm";
 
 export const metadata: Metadata = {
-  title: "Apply for an Audit Call",
-  description: "Apply for a focused Customer Journey Audit Fit Call.",
+  title: "Get Your Free Revenue Leak Map",
+  description:
+    "Request a free Revenue Leak Map for your current lead-to-customer journey.",
 };
 export default function ApplyPage() {
   return (
@@ -27,19 +28,21 @@ export default function ApplyPage() {
       <main>
         <SectionWrapper className="apply-page-shell grid gap-10 !pt-32 pb-24 sm:!pt-36 lg:grid-cols-[0.82fr_1.18fr] lg:items-start lg:gap-12 lg:!pt-36">
           <div className="max-w-xl lg:sticky lg:top-28 lg:self-start lg:pt-8">
-            <p className="eyebrow text-cyan-100/70">Guided application</p>
+            <p className="eyebrow text-cyan-100/70">
+              Free diagnostic request
+            </p>
             <h1 className="section-title mt-5 max-w-lg text-[2.65rem] font-semibold leading-[1.04] text-white sm:text-5xl lg:text-[3.35rem]">
-              Apply for a Customer Journey Audit
+              Get Your Free Revenue Leak Map
             </h1>
             <p className="mt-6 max-w-md text-[1.02rem] leading-7 text-[#b8bcc3]">
-              Answer one focused question at a time so we can understand your
-              business, the journey customers move through, and the systems
-              already in play.
+              Answer a few focused questions so I can review where your current
+              lead-to-customer journey may be leaking and what I would fix
+              first.
             </p>
             <ul className="mt-9 space-y-3 text-[0.82rem] leading-6 text-[#c5c7c9]/82">
               {[
-                "Focused fit conversation",
-                "Tailored to your current journey",
+                "Simple customer journey map",
+                "Likely bottlenecks and first fix",
                 "No pressure or inflated promises",
               ].map((v) => (
                 <li key={v} className="flex items-center gap-3">

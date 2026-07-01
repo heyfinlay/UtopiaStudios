@@ -42,8 +42,10 @@ export function HeroSection({
           {hero.subheadline}
         </p>
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/apply">{hero.primaryCta}</ButtonLink>
-          <ButtonLink href="#vsl" variant="secondary">
+          <ButtonLink href="/#revenue-leak-map-form">
+            {hero.primaryCta}
+          </ButtonLink>
+          <ButtonLink href="/#leak-map-reviews" variant="secondary">
             {hero.secondaryCta}
           </ButtonLink>
         </div>

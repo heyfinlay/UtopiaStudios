@@ -14,7 +14,14 @@ export function StickyCTA() {
 
   useEffect(() => {
     const update = () => {
-      const nextVisible = window.scrollY > 680;
+      const formSection = document.getElementById("revenue-leak-map-form");
+      const formBounds = formSection?.getBoundingClientRect();
+      const formInView = Boolean(
+        formBounds &&
+          formBounds.top < window.innerHeight &&
+          formBounds.bottom > 0,
+      );
+      const nextVisible = window.scrollY > 680 && !formInView;
 
       if (nextVisible !== visibleRef.current) {
         setVisible(nextVisible);
@@ -42,8 +49,8 @@ export function StickyCTA() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#141313]/90 p-3 backdrop-blur-xl md:hidden">
-      <ButtonLink href="/apply" className="w-full">
-        Apply for the Free Fit Call
+      <ButtonLink href="#revenue-leak-map-form" className="w-full">
+        Get My Free Revenue Leak Map
       </ButtonLink>
     </div>
   );

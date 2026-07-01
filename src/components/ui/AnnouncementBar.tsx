@@ -9,14 +9,14 @@ export function AnnouncementBar({ text }: { text: string }) {
     >
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-200/45 to-transparent" />
       <Link
-        href="/apply"
+        href="/#revenue-leak-map-form"
         className="inline-flex max-w-full items-center gap-2 whitespace-nowrap"
       >
         <span className="hidden h-1.5 w-1.5 rounded-full bg-cyan-200 shadow-[0_0_16px_rgba(125,220,255,0.9)] sm:inline-block" />
         <Sparkles className="h-3 w-3 shrink-0 text-cyan-100/80" />
         <span className="truncate">{text}</span>
         <span className="hidden text-cyan-100/70 sm:inline">
-          Book your audit
+          Get leak map
         </span>
         <ArrowRight className="h-3 w-3 shrink-0 text-cyan-100/80" />
       </Link>

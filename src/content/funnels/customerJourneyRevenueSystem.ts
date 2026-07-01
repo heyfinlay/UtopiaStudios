@@ -2,22 +2,22 @@ export const customerJourneyRevenueSystem = {
   slug: "customer-journey-revenue-system",
   title: "Customer Journey Revenue System",
   announcement:
-    "Customer Journey Audit: Find where enquiries, bookings, and sales are slipping through the cracks.",
+    "Free Revenue Leak Map: find where enquiries, bookings, and follow-ups may be slipping.",
   hero: {
-    eyebrow: "Customer Journey Revenue System",
-    headline: "Stop Losing Customers Between Interest and Purchase.",
+    eyebrow: "Free Revenue Leak Map",
+    headline: "Find Where Your Business Is Losing Customers Before They Buy",
     subheadline:
-      "Temporary Utopia helps established businesses identify and fix the points where customers get confused, delayed, ignored, or lost — using better digital journeys, smarter follow-up, practical automation, and AI where it genuinely improves the experience.",
-    primaryCta: "Book Your Customer Journey Audit Call",
-    secondaryCta: "Watch the Breakdown",
+      "Get a free Revenue Leak Map showing the weakest points in your lead, booking, and follow-up system — and the first system I would fix to stop money slipping through the cracks.",
+    primaryCta: "Get My Free Revenue Leak Map",
+    secondaryCta: "See What Gets Reviewed",
     support:
-      "For businesses with existing enquiries, customers, traffic, or demand — but a messy path from interest to action.",
+      "Takes less than 2 minutes to apply. No generic AI advice. Just a clear look at where your customer journey may be breaking down.",
   },
   vsl: {
     title: "The Hidden Revenue Leak Inside Most Growing Businesses",
     embedUrl: "",
     placeholderText:
-      "Add your VSL embed here. This video should explain why most businesses are leaking revenue between interest and action, and why the first step is a Customer Journey Audit Call.",
+      "Add your VSL embed here. This video should explain why most businesses may be leaking revenue between interest and action, and why the first step is a Revenue Leak Map.",
   },
   leaks: [
     "Slow enquiry response",
@@ -110,8 +110,8 @@ export const customerJourneyRevenueSystem = {
       "We work across common website, CRM, booking, email, SMS, payment, and automation platforms. The exact stack is less important than the journey it supports.",
     ],
     [
-      "What happens after the audit call?",
-      "If there is a fit, we may recommend a paid Customer Journey Audit. You will know the scope, price, and expected process before deciding.",
+      "What happens after the Revenue Leak Map?",
+      "If there is a clear opportunity, we may recommend a next step. You will know the scope, price, and expected process before deciding.",
     ],
     [
       "How much does the full system cost?",

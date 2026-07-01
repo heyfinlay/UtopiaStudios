@@ -46,15 +46,15 @@ export function MechanismSection({
       <Reveal className="glass mt-14 flex flex-col items-start justify-between gap-6 rounded-[20px] p-6 sm:flex-row sm:items-center sm:p-8">
         <div>
           <h3 className="text-xl font-semibold">
-            Start with a focused audit call.
+            Start with a free Revenue Leak Map.
           </h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[#9fa6b2]">
-            We will understand the current journey, identify obvious gaps, and
-            decide whether a paid audit makes sense.
+            We will review the current journey, identify likely gaps, and show
+            the first system we would fix.
           </p>
         </div>
-        <ButtonLink href="/apply" className="shrink-0">
-          Book Your Audit Call
+        <ButtonLink href="/#revenue-leak-map-form" className="shrink-0">
+          Request a Free Leak Map
         </ButtonLink>
       </Reveal>
     </SectionWrapper>

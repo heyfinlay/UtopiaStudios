@@ -25,11 +25,12 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { CommercialMathsCalculator } from "@/components/sections/CommercialMathsCalculator";
+import { ApplicationForm } from "@/components/forms/ApplicationForm";
 
 export const metadata: Metadata = {
-  title: "Customer Journey Revenue System",
+  title: "Free Revenue Leak Map",
   description:
-    "Temporary Utopia helps businesses find and fix the points where customers get lost between interest, enquiry, booking, purchase, follow-up, and repeat revenue.",
+    "Temporary Utopia helps service businesses find where leads, bookings, follow-ups, and potential revenue may be leaking before prospects become customers.",
 };
 
 const leakCards = [
@@ -57,13 +58,54 @@ const systemSteps = [
   ["Amplify", "We layer in AI to scale your capacity without overhead."],
 ];
 
-const auditDeliverables = [
-  "Customer Journey Map",
-  "Revenue Leak Report",
-  "Priority Fix Matrix",
-  "Tool, CRM, and automation review",
-  "Follow-up and handover recommendations",
-  "Implementation roadmap",
+const reviewCards = [
+  {
+    icon: FileSearch,
+    title: "Lead Capture",
+    body: "Where enquiries, DMs, forms, calls, and bookings are currently being collected — and whether any are being missed.",
+  },
+  {
+    icon: Clock3,
+    title: "Follow-Up Speed",
+    body: "How quickly new leads hear back, what happens if they do not reply, and where manual follow-up is creating delay.",
+  },
+  {
+    icon: Workflow,
+    title: "Booking Flow",
+    body: "Whether interested prospects have a clear path to book, buy, or take the next step without needing extra chasing.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Nurture & Reminders",
+    body: "What happens between enquiry and decision — including reminders, no-show prevention, and reactivation.",
+  },
+  {
+    icon: Gauge,
+    title: "Revenue Leakage",
+    body: "A simple estimate of where potential revenue may be slipping away based on lead volume, customer value, and current process.",
+  },
+];
+
+const mapDeliverables = [
+  "A simple map of your current customer journey",
+  "The 3 most likely places leads are dropping off",
+  "The first system I would fix",
+  "A rough estimate of what the leak may be costing",
+  "A short Loom breakdown if your business looks like a fit",
+];
+
+const goodFitItems = [
+  "Coaches, consultants, agencies, clinics, local service businesses, and high-ticket service providers",
+  "Businesses getting enquiries, DMs, bookings, calls, or form submissions",
+  "Businesses relying on manual follow-up, scattered tools, or memory",
+  "Businesses that suspect leads are going cold before they become customers",
+];
+
+const notFitItems = [
+  "You have no offer yet",
+  "You have no leads, audience, traffic, or enquiry flow",
+  "You want AI for the sake of AI",
+  "You are not willing to fix the actual customer journey",
 ];
 
 const fitIndustries = [
@@ -102,24 +144,24 @@ const proofPoints = [
 
 const faqs = [
   [
-    "How long does an audit take?",
-    "The paid audit is typically completed within 5-7 business days after the right access and information are provided.",
+    "What is the Free Revenue Leak Map?",
+    "It is a practical diagnostic based on what you provide. I review your lead-to-customer journey and identify the likely bottlenecks, the first system I would fix, and the potential revenue leak worth looking at.",
   ],
   [
-    "What happens on the free fit call?",
-    "We check whether your business has enough existing demand, customer value, and journey complexity to justify a paid audit. If not, we will say so.",
+    "Is this just a sales call?",
+    "No. The first step is the form. If there is enough context and a clear opportunity, I may send a short Loom breakdown. A call only makes sense if there is a real fit.",
   ],
   [
-    "What happens after the fit call?",
-    "If there is a fit, we will recommend the next best step with scope, price, timeline, and expectations before you decide. Implementation is separate and only scoped after the audit identifies the highest-priority fixes.",
+    "How long does it take?",
+    "The form takes less than 2 minutes to apply. The review depends on volume, but the goal is to send back a clear view of the weakest points without generic AI advice.",
   ],
   [
     "Do we need to switch our CRM?",
-    "Not necessarily. We prefer to build on top of your existing stack unless it is fundamentally broken. We work across common CRM, booking, payment, email, SMS, and automation tools.",
+    "Not necessarily. The map starts with your current tools and process. If a tool is part of the problem, I will call that out, but the first fix is often process, handover, speed, or clarity.",
   ],
   [
     "Do you guarantee results?",
-    "No responsible studio can guarantee a commercial result. The audit is designed to find measurable opportunities and prioritise fixes, not promise revenue out of thin air.",
+    "No. The Revenue Leak Map is designed to find likely bottlenecks and potential leakage based on what you provide. It does not promise guaranteed leads, sales, or revenue.",
   ],
 ];
 
@@ -127,21 +169,23 @@ export default function CustomerJourneyRevenueSystemPage() {
   return (
     <>
       <FloatingBackground />
-      <AnnouncementBar text="Audit slots open: find where enquiries, bookings, and sales are slipping through the cracks." />
+      <AnnouncementBar text="Free Revenue Leak Map: find where leads, bookings, and follow-ups may be slipping." />
       <SiteHeader withAnnouncement />
       <main>
         <Hero />
+        <LeakMapReviews />
         <Credibility />
         <Vsl />
         <Letter />
         <LeakChecklist />
         <LeakMath />
         <SystemWorking />
-        <AuditDeliverables />
+        <WhatYouGet />
         <SampleAuditPreview />
         <HumanFirst />
         <Mechanism />
-        <Comparison />
+        <WhoThisIsFor />
+        <LeakMapFormSection />
         <Faq />
         <FinalCta />
       </main>
@@ -160,26 +204,33 @@ function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,760px)_minmax(320px,1fr)] xl:gap-16">
           <div>
             <p className="eyebrow mb-7 text-cyan-100/80">
-              Customer Journey Revenue System
+              Free Revenue Leak Map
             </p>
             <h1 className="display mb-7 text-[clamp(2.35rem,7vw,4.5rem)] font-semibold text-white md:text-[72px]">
-              Stop Losing Customers Between{" "}
-              <span className="text-[#c8c6c5]/60">Interest and Purchase.</span>
+              Find Where Your Business Is Losing Customers{" "}
+              <span className="text-[#c8c6c5]/60">Before They Buy</span>
             </h1>
             <p className="mb-9 max-w-2xl text-base leading-[1.65] text-[#c5c7c9] md:text-lg">
-              A 5-7 business day Customer Journey Audit for established service
-              businesses already getting enquiries, bookings, traffic, or sales
-              conversations, but losing people before they become customers.
+              Get a free Revenue Leak Map showing the weakest points in your
+              lead, booking, and follow-up system — and the first system I would
+              fix to stop money slipping through the cracks.
             </p>
             <div className="flex flex-col items-stretch gap-4 md:flex-row md:items-center">
-              <ButtonLink href="/apply" className="px-8 py-5">
-                Apply for the Free Fit Call
+              <ButtonLink href="#revenue-leak-map-form" className="px-8 py-5">
+                Get My Free Revenue Leak Map
               </ButtonLink>
-              <ButtonLink href="#vsl" variant="secondary" className="px-8 py-5">
-                <Play className="h-5 w-5" />
-                Watch the Breakdown
+              <ButtonLink
+                href="#leak-map-reviews"
+                variant="secondary"
+                className="px-8 py-5"
+              >
+                See What Gets Reviewed
               </ButtonLink>
             </div>
+            <p className="mt-5 max-w-2xl text-sm leading-6 text-[#aab1bd]">
+              Takes less than 2 minutes to apply. No generic AI advice. Just a
+              clear look at where your customer journey may be breaking down.
+            </p>
           </div>
           <HeroProofPanel />
         </div>
@@ -190,7 +241,7 @@ function Hero() {
 
 function HeroProofPanel() {
   return (
-    <aside className="relative hidden lg:block" aria-label="Audit proof panel">
+    <aside className="relative hidden lg:block" aria-label="Leak map proof panel">
       <div className="absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(125,220,255,.16),transparent_68%)] blur-2xl" />
       <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 bg-[#141313]/55 p-6 shadow-[0_0_80px_rgba(105,190,255,0.1)]">
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/50 to-transparent" />
@@ -239,9 +290,9 @@ function HeroProofPanel() {
 
         <div className="mt-5 grid grid-cols-3 gap-3">
           {[
-            { icon: Clock3, value: "5-7 day", label: "audit" },
+            { icon: Clock3, value: "<2 min", label: "apply" },
             { icon: FileSearch, value: "clear", label: "diagnostic" },
-            { icon: CheckCircle2, value: "optional", label: "build" },
+            { icon: CheckCircle2, value: "manual", label: "review" },
           ].map(({ icon: Icon, value, label }) => (
             <div
               key={value}
@@ -269,6 +320,48 @@ function HeroProofPanel() {
         </div>
       </GlassCard>
     </aside>
+  );
+}
+
+function LeakMapReviews() {
+  return (
+    <section
+      id="leak-map-reviews"
+      className="relative overflow-hidden bg-[#0e0e0e]/35 py-20 md:py-28"
+    >
+      <div className="absolute left-1/2 top-0 h-px w-[72vw] -translate-x-1/2 bg-gradient-to-r from-transparent via-cyan-200/25 to-transparent" />
+      <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-20">
+        <div className="mb-10 max-w-4xl md:mb-14">
+          <p className="eyebrow text-cyan-100/80">Free diagnostic review</p>
+          <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
+            What The Free Revenue Leak Map Reviews
+          </h2>
+          <p className="mt-6 text-lg leading-8 text-[#c5c7c9]">
+            Most businesses do not lose customers because one big thing is
+            broken. They lose them in small gaps: slow replies, messy
+            handovers, unclear next steps, forgotten follow-ups, weak
+            reminders, or leads sitting in tools nobody checks.
+          </p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {reviewCards.map(({ icon: Icon, title, body }) => (
+            <GlassCard
+              key={title}
+              className="rounded-3xl p-6 transition hover:border-cyan-100/25 hover:bg-white/[.045]"
+            >
+              <div className="mb-6 flex items-center justify-between gap-4">
+                <Icon className="h-5 w-5 text-cyan-100/80" />
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-100/80 shadow-[0_0_16px_rgba(125,220,255,0.9)]" />
+              </div>
+              <h3 className="text-xl font-medium tracking-[-0.01em] text-white">
+                {title}
+              </h3>
+              <p className="mt-4 text-sm leading-6 text-[#c5c7c9]">{body}</p>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -348,7 +441,9 @@ function Letter() {
       <div className="mx-auto max-w-5xl px-6">
         <GlassCard className="relative overflow-hidden rounded-[2rem] border-cyan-100/15 p-8 shadow-[0_0_80px_rgba(105,190,255,0.08)] md:p-16 lg:p-20">
           <div className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/40 to-transparent" />
-          <p className="eyebrow mb-10 text-[#c8c6c5]">Dear Business Owner,</p>
+          <p className="mb-8 text-xl leading-[1.68] tracking-[-0.01em] text-[#c5c7c9] md:text-2xl">
+            Dear Business Owner,
+          </p>
           <div className="max-w-4xl space-y-8 text-xl leading-[1.68] tracking-[-0.01em] text-[#c5c7c9] md:text-2xl">
             <p>
               You’ve spent thousands on marketing, hours on product, and years
@@ -368,9 +463,9 @@ function Letter() {
               that chaos, your revenue is leaking.
             </p>
             <p>
-              At Temporary Utopia, we don’t just build websites. We design
-              systems that catch those leaks and turn them into permanent
-              growth.
+              At Temporary Utopia, we look for the practical points where the
+              journey may be leaking, then identify the first system worth
+              fixing.
             </p>
             <p className="pt-6 text-white">— The Team at Temporary Utopia</p>
           </div>
@@ -452,8 +547,8 @@ function SystemWorking() {
               the next step becomes easier to take, and good demand is less
               likely to drift away.
             </p>
-            <ButtonLink href="/apply" className="mt-7">
-              Apply for the Free Fit Call
+            <ButtonLink href="#revenue-leak-map-form" className="mt-7">
+              Find My Biggest Revenue Leak
             </ButtonLink>
           </div>
           <div className="flex flex-col justify-end gap-3">
@@ -473,7 +568,7 @@ function SystemWorking() {
   );
 }
 
-function AuditDeliverables() {
+function WhatYouGet() {
   return (
     <section className="py-20 md:py-28">
       <div className="mx-auto max-w-[1440px] px-6 md:px-20">
@@ -481,16 +576,16 @@ function AuditDeliverables() {
           <div>
             <p className="eyebrow text-cyan-100/80">What you receive</p>
             <h2 className="section-title mt-5 max-w-3xl text-4xl font-medium text-white md:text-5xl">
-              A tangible diagnostic, not a vague strategy chat.
+              What You&apos;ll Get Back
             </h2>
           </div>
           <p className="max-w-md text-base leading-7 text-[#c5c7c9]">
-            The paid audit turns the current journey into a clear map of what is
-            happening, where people drop off, and what should be fixed first.
+            A useful diagnostic view of what is happening between first interest
+            and the sale, based on what you provide.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {auditDeliverables.map((deliverable, index) => (
+          {mapDeliverables.map((deliverable, index) => (
             <GlassCard
               key={deliverable}
               className="rounded-3xl p-6 transition hover:border-cyan-100/25 hover:bg-white/[.045]"
@@ -518,17 +613,16 @@ function SampleAuditPreview() {
       <div className="absolute -left-40 top-1/3 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.12),transparent_70%)]" />
       <div className="mx-auto grid max-w-[1440px] gap-10 px-6 md:grid-cols-[0.9fr_1.1fr] md:px-20">
         <div>
-          <p className="eyebrow text-cyan-100/80">Example audit output</p>
+          <p className="eyebrow text-cyan-100/80">Example map output</p>
           <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
             Here is the kind of thing we look for.
           </h2>
           <p className="mt-6 text-lg leading-8 text-[#c5c7c9]">
-            Until there are public case studies, the page should still show the
-            shape of the work. These are common findings we would validate
-            against the real journey, tools, data, and team process.
+            These are common findings that would be checked against your real
+            journey, tools, lead sources, customer value, and current process.
           </p>
-          <ButtonLink href="/apply" className="mt-8">
-            Apply for the Free Fit Call
+          <ButtonLink href="#revenue-leak-map-form" className="mt-8">
+            Show Me Where Leads Are Slipping
           </ButtonLink>
         </div>
         <GlassCard className="rounded-[2rem] p-5 md:p-7">
@@ -606,8 +700,8 @@ function HumanFirst() {
               <BotOff className="mt-1 h-5 w-5 shrink-0 text-[#c8c6c5]" />
               <p className="text-[#c5c7c9]">
                 <strong className="text-white">Invisible Systems:</strong>{" "}
-                Automation that works in the background to ensure no lead is
-                ever left un-nurtured.
+                Automation that works in the background to make follow-up more
+                consistent and less dependent on memory.
               </p>
             </li>
           </ul>
@@ -641,44 +735,80 @@ function Mechanism() {
   );
 }
 
-function Comparison() {
+function WhoThisIsFor() {
   return (
     <section className="bg-[#0e0e0e]/50 py-20 md:py-28">
       <div className="mx-auto max-w-5xl px-6">
+        <div className="mb-10 text-center md:mb-12">
+          <p className="eyebrow text-cyan-100/80">Fit check</p>
+          <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
+            This Is For Businesses That Already Have Interest Coming In
+          </h2>
+        </div>
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           <div className="rounded-3xl border border-white/5 p-8 md:p-10">
             <h3 className="mb-8 flex items-center gap-3 text-2xl font-medium text-white">
               <Smile className="h-6 w-6 text-[#c8c6c5]" />
-              This is for you if...
+              Good fit
             </h3>
             <ul className="space-y-6 text-[#c5c7c9]">
-              <li>
-                • You already receive enquiries, bookings, traffic, or sales
-                conversations.
-              </li>
-              <li>• You sell high-value services or products ($2k+).</li>
-              <li>
-                • You know you have “leaky” processes but lack the time to fix
-                them.
-              </li>
-              <li>• You want sustainable systems, not “growth hacks.”</li>
+              {goodFitItems.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
             </ul>
           </div>
           <div className="rounded-3xl border border-white/5 p-8 opacity-60 md:p-10">
             <h3 className="mb-8 flex items-center gap-3 text-2xl font-medium text-white">
               <Frown className="h-6 w-6 text-[#c5c7c9]" />
-              This is NOT for you if...
+              Not a fit
             </h3>
             <ul className="space-y-6 text-[#c5c7c9]">
-              <li>• You are a pre-revenue startup with zero customers.</li>
-              <li>• You are looking for a quick “get rich” AI bot.</li>
-              <li>
-                • You are unwilling to change your current internal workflow.
-              </li>
-              <li>• You sell low-margin commodity products.</li>
+              {notFitItems.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
             </ul>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function LeakMapFormSection() {
+  return (
+    <section
+      id="revenue-leak-map-form"
+      className="relative overflow-hidden py-20 md:py-28"
+    >
+      <div className="absolute -right-40 top-1/4 h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(65,105,225,.13),transparent_70%)]" />
+      <div className="mx-auto grid max-w-[1440px] gap-10 px-6 md:px-20 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div className="max-w-xl lg:sticky lg:top-28">
+          <p className="eyebrow text-cyan-100/80">Free diagnostic request</p>
+          <h2 className="section-title mt-5 text-4xl font-medium text-white md:text-5xl">
+            Get Your Free Revenue Leak Map
+          </h2>
+          <p className="mt-6 text-lg leading-8 text-[#c5c7c9]">
+            Answer a few questions about your business and I&apos;ll review
+            where your current lead-to-customer journey may be leaking. If
+            there is a clear opportunity, I&apos;ll send back a short breakdown
+            showing what I would fix first.
+          </p>
+          <div className="mt-8 space-y-3 text-sm leading-6 text-[#c5c7c9]/85">
+            {[
+              "Takes less than 2 minutes to apply",
+              "Built from the details you provide",
+              "No guaranteed revenue claims or generic AI advice",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan-100/80" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <GlassCard className="application-audit-card">
+          <ApplicationForm />
+        </GlassCard>
       </div>
     </section>
   );
@@ -719,17 +849,23 @@ function FinalCta() {
       <div className="absolute left-1/2 top-0 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(138,43,226,.12),transparent_70%)] opacity-60" />
       <div className="relative z-10 mx-auto max-w-[1440px] px-6">
         <h2 className="display mb-8 text-4xl font-semibold text-white md:text-[72px]">
-          Ready to stop the leaks?
+          You Already Paid To Create The Interest. Now Find Out Where It&apos;s
+          Leaking.
         </h2>
         <p className="mx-auto mb-12 max-w-2xl text-lg leading-[1.6] text-[#c5c7c9]">
-          Start with the free fit call. If the audit makes commercial sense,
-          you will know the recommended scope, price, timeline, and next step
-          before deciding.
+          The Revenue Leak Map gives you a clear look at what is happening
+          between first interest and the sale — so you can stop guessing and fix
+          the part of the system that matters first.
         </p>
-        <ButtonLink href="/apply" className="px-12 py-6 text-lg">
-          Apply for the Free Fit Call
+        <ButtonLink
+          href="#revenue-leak-map-form"
+          className="px-12 py-6 text-lg"
+        >
+          Get My Free Revenue Leak Map
         </ButtonLink>
-        <p className="eyebrow mt-8">Only 4 audit slots available per month</p>
+        <p className="eyebrow mt-8">
+          Practical diagnostic. No guaranteed revenue claims.
+        </p>
       </div>
     </section>
   );

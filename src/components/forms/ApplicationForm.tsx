@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FocusEvent, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
@@ -36,7 +35,6 @@ function normalizeWebsite(value: string | undefined) {
 const schema = z.object({
   name: z.string().min(2, "Please enter your name."),
   email: z.email("Please enter a valid email."),
-  phone: z.string().min(6, "Please enter a phone number."),
   businessName: z.string().min(2, "Please enter your business name."),
   website: z
     .string()
@@ -45,16 +43,19 @@ const schema = z.object({
       (v) => !v || /^(https?:\/\/)?[^\s.]+\.[^\s]+$/.test(v),
       "Enter a valid website domain.",
     ),
-  industry: z.string().min(2, "Please enter your industry."),
-  mainAction: z.string().min(1, "Select the main customer action."),
+  offer: z.string().min(4, "Please describe what you sell."),
+  idealCustomer: z.string().min(4, "Please describe your ideal customer."),
+  leadSources: z.array(z.string()).min(1, "Select at least one lead source."),
+  afterEnquiry: z
+    .string()
+    .min(12, "Please describe what happens after someone enquires."),
+  followUpSpeed: z.string().min(1, "Select your usual follow-up speed."),
+  tools: z.string().optional(),
   monthlyVolume: monthlyVolumeSchema,
   averageValue: averageValueSchema,
-  tools: z.array(z.string()),
-  aiTools: z.array(z.string()),
-  aiToolsOther: z.string().optional(),
-  biggestProblem: z.string().min(20, "Please give us a little more context."),
-  runningAds: z.string().min(1, "Select an answer."),
-  hasCrm: z.string().min(1, "Select an answer."),
+  dropOff: z
+    .string()
+    .min(12, "Please share where you think people are dropping off."),
   consent: z.boolean().refine(Boolean, "Consent is required to continue."),
   marketingOptIn: z.boolean(),
 });
@@ -62,33 +63,24 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 type FieldName = keyof Values;
 
-const toolOptions = [
-  "Shopify",
-  "GoHighLevel",
-  "ClickFunnels",
-  "Squarespace",
-  "WordPress",
-  "Webflow",
-  "HubSpot",
-  "Klaviyo",
-  "Mailchimp",
-  "Calendly",
-  "Stripe",
-  "Zapier",
-  "Make",
-  "n8n",
+const leadSourceOptions = [
+  "Website",
+  "Instagram DMs",
+  "Facebook",
+  "Paid ads",
+  "Referrals",
+  "Email list",
+  "Phone calls",
   "Other",
 ];
 
-const aiToolOptions = [
-  "ChatGPT",
-  "Claude",
-  "Gemini",
-  "Perplexity",
-  "OpenAI API",
-  "Microsoft Copilot",
-  "Cursor",
-  "Other",
+const followUpSpeedOptions = [
+  "Instantly",
+  "Within 1 hour",
+  "Same day",
+  "Next day",
+  "It depends",
+  "Not sure",
 ];
 
 type Question = {
@@ -114,14 +106,31 @@ type Question = {
 const questions: Question[] = [
   {
     eyebrow: "Question 1",
-    title: "What business should we audit?",
-    description: "Add the company, clinic, studio, or brand name.",
-    fields: ["businessName"],
-    validationSchema: schema.pick({ businessName: true }),
-    placeholder: "Company or brand",
+    title: "What is your name?",
+    description: "Add the best contact for the Revenue Leak Map request.",
+    fields: ["name"],
+    validationSchema: schema.pick({ name: true }),
+    placeholder: "Your full name",
   },
   {
     eyebrow: "Question 2",
+    title: "What email should I use?",
+    description: "Use the address where you want the breakdown sent.",
+    fields: ["email"],
+    validationSchema: schema.pick({ email: true }),
+    placeholder: "you@company.com",
+    inputType: "email",
+  },
+  {
+    eyebrow: "Question 3",
+    title: "What business are we reviewing?",
+    description: "Add the business, clinic, studio, agency, or brand name.",
+    fields: ["businessName"],
+    validationSchema: schema.pick({ businessName: true }),
+    placeholder: "Business name",
+  },
+  {
+    eyebrow: "Question 4",
     title: "What website should we review?",
     description: "Share the main website or landing page if there is one.",
     fields: ["website"],
@@ -130,132 +139,92 @@ const questions: Question[] = [
     inputType: "url",
   },
   {
-    eyebrow: "Question 3",
-    title: "What industry are you in?",
-    description: "Give us the market context for the customer journey.",
-    fields: ["industry"],
-    validationSchema: schema.pick({ industry: true }),
-    placeholder: "e.g. Dental, consulting, home services",
-  },
-  {
-    eyebrow: "Question 4",
-    title: "What is the main customer action?",
-    description: "Choose the action the journey should make easier to complete.",
-    fields: ["mainAction"],
-    validationSchema: schema.pick({ mainAction: true }),
-    control: "select",
-    options: [
-      "Enquiry",
-      "Booking",
-      "Purchase",
-      "Quote request",
-      "Consultation",
-      "Checkout",
-    ],
-  },
-  {
     eyebrow: "Question 5",
-    title: "What is your name?",
-    description: "Add the best contact for the fit call and audit follow-up.",
-    fields: ["name"],
-    validationSchema: schema.pick({ name: true }),
-    placeholder: "Your full name",
+    title: "What do you sell?",
+    description: "Describe the service, package, offer, or main thing people buy.",
+    fields: ["offer"],
+    validationSchema: schema.pick({ offer: true }),
+    control: "textarea",
+    placeholder: "Services, packages, retainers, consultations, treatments...",
   },
   {
     eyebrow: "Question 6",
-    title: "What email should we use?",
-    description: "Use the address where you want the booking details sent.",
-    fields: ["email"],
-    validationSchema: schema.pick({ email: true }),
-    placeholder: "you@company.com",
-    inputType: "email",
+    title: "Who is your ideal customer?",
+    description: "Give the practical version, not a brand persona.",
+    fields: ["idealCustomer"],
+    validationSchema: schema.pick({ idealCustomer: true }),
+    control: "textarea",
+    placeholder: "Who you most want to enquire, book, buy, or become a client",
   },
   {
     eyebrow: "Question 7",
-    title: "What phone number should we use?",
-    description: "Add the best number in case we need to clarify the application.",
-    fields: ["phone"],
-    validationSchema: schema.pick({ phone: true }),
-    placeholder: "Your best contact number",
-    inputType: "tel",
+    title: "Where do most leads come from right now?",
+    description: "Select every source that matters today.",
+    fields: ["leadSources"],
+    validationSchema: schema.pick({ leadSources: true }),
+    control: "checkboxGrid",
+    checkboxOptions: leadSourceOptions,
   },
   {
     eyebrow: "Question 8",
-    title: "What is your monthly enquiry, booking, or purchase volume?",
-    description: "A rough range is enough for the fit check.",
+    title: "What happens after someone enquires?",
+    description: "Describe the current handover, reply, booking step, or follow-up.",
+    fields: ["afterEnquiry"],
+    validationSchema: schema.pick({ afterEnquiry: true }),
+    control: "textarea",
+    placeholder: "What happens today after a form, DM, call, booking, or referral?",
+  },
+  {
+    eyebrow: "Question 9",
+    title: "How fast do you usually follow up?",
+    description: "A rough answer is enough.",
+    fields: ["followUpSpeed"],
+    validationSchema: schema.pick({ followUpSpeed: true }),
+    control: "select",
+    options: followUpSpeedOptions,
+  },
+  {
+    eyebrow: "Question 10",
+    title: "What tools are you currently using?",
+    description:
+      "List the CRM, spreadsheet, booking, email, chat, automation, or sales tools in play.",
+    fields: ["tools"],
+    validationSchema: schema.pick({ tools: true }),
+    control: "textarea",
+    placeholder:
+      "CRM, spreadsheet, Calendly, email platform, ManyChat, GoHighLevel, HubSpot, etc.",
+  },
+  {
+    eyebrow: "Question 11",
+    title: "Roughly how many enquiries do you get per month?",
+    description: "Include DMs, calls, forms, booking requests, and referrals.",
     fields: ["monthlyVolume"],
     validationSchema: schema.pick({ monthlyVolume: true }),
     control: "volumeSlider",
   },
   {
-    eyebrow: "Question 9",
-    title: "What is the average customer value?",
-    description: "This helps size whether a journey audit is commercially useful.",
+    eyebrow: "Question 12",
+    title: "What is an average customer worth?",
+    description: "This helps estimate whether a potential leak is worth fixing.",
     fields: ["averageValue"],
     validationSchema: schema.pick({ averageValue: true }),
     control: "slider",
   },
   {
-    eyebrow: "Question 10",
-    title: "Are you currently running ads?",
-    description:
-      "This helps us understand whether paid demand is already entering the journey.",
-    fields: ["runningAds"],
-    validationSchema: schema.pick({ runningAds: true }),
-    control: "select",
-    options: ["Yes", "No", "Not sure"],
-  },
-  {
-    eyebrow: "Question 11",
-    title: "Do you currently have a CRM?",
-    description: "Tell us whether leads and follow-up are already tracked somewhere.",
-    fields: ["hasCrm"],
-    validationSchema: schema.pick({ hasCrm: true }),
-    control: "select",
-    options: ["Yes", "No", "Not sure"],
-  },
-  {
-    eyebrow: "Question 12",
-    title: "Where does the journey feel most broken?",
-    description:
-      "Share the slow, unclear, manual, or disconnected part you most want fixed.",
-    fields: ["biggestProblem"],
-    validationSchema: schema.pick({ biggestProblem: true }),
+    eyebrow: "Question 13",
+    title: "Where do you think people are currently dropping off?",
+    description: "Share the likely bottleneck, even if it is just a hunch.",
+    fields: ["dropOff"],
+    validationSchema: schema.pick({ dropOff: true }),
     control: "textarea",
     placeholder:
-      "Where does the current journey feel slow, unclear, manual, or disconnected?",
-  },
-  {
-    eyebrow: "Question 13",
-    title: "What business tools are currently in the stack?",
-    description: "Select the platforms your team already uses.",
-    fields: ["tools"],
-    validationSchema: schema.pick({ tools: true }),
-    control: "checkboxGrid",
-    checkboxOptions: toolOptions,
+      "Slow replies, no-shows, DMs, unclear next steps, forgotten leads, quote follow-up...",
   },
   {
     eyebrow: "Question 14",
-    title: "What AI tools are currently used?",
-    description: "Select any AI tools already involved in your work or customer journey.",
-    fields: ["aiTools"],
-    validationSchema: schema.pick({ aiTools: true }),
-    control: "checkboxGrid",
-    checkboxOptions: aiToolOptions,
-  },
-  {
-    eyebrow: "Question 15",
-    title: "Any other AI tools or notes?",
+    title: "Request your free Revenue Leak Map.",
     description:
-      "Add internal GPTs, agents, image/video tools, automations, or anything we should know.",
-    fields: ["aiToolsOther"],
-    validationSchema: schema.pick({ aiToolsOther: true }),
-    placeholder: "Optional notes",
-  },
-  {
-    eyebrow: "Question 16",
-    title: "Confirm and continue to booking.",
-    description: "Final consent before we send the application into the audit workflow.",
+      "Final consent before the request is sent for manual review.",
     fields: ["consent", "marketingOptIn"],
     validationSchema: schema.pick({ consent: true, marketingOptIn: true }),
     control: "confirm",
@@ -263,23 +232,22 @@ const questions: Question[] = [
 ];
 
 const fieldLabels: Partial<Record<FieldName, string>> = {
-  aiToolsOther: "Additional notes",
+  afterEnquiry: "What happens after enquiry",
   averageValue: "Average customer value",
-  biggestProblem: "Journey friction",
   businessName: "Company / brand name",
+  dropOff: "Likely drop-off point",
   email: "Email address",
-  hasCrm: "CRM status",
-  industry: "Industry",
-  mainAction: "Main action",
+  followUpSpeed: "Follow-up speed",
+  idealCustomer: "Ideal customer",
+  leadSources: "Lead sources",
   monthlyVolume: "Monthly volume",
   name: "Your name",
-  phone: "Phone number",
-  runningAds: "Ad status",
+  offer: "What you sell",
+  tools: "Current tools",
   website: "Website URL",
 };
 
 export function ApplicationForm() {
-  const router = useRouter();
   const [submitted, setSubmitted] = useState<Values | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
@@ -295,9 +263,8 @@ export function ApplicationForm() {
   } = useForm<Values>({
     resolver: zodResolver(schema),
     defaultValues: {
-      tools: [],
-      aiTools: [],
-      aiToolsOther: "",
+      leadSources: [],
+      tools: "",
       monthlyVolume: defaultMonthlyVolume,
       averageValue: defaultAverageCustomerValue,
       marketingOptIn: false,
@@ -343,7 +310,6 @@ export function ApplicationForm() {
       }
 
       setSubmitted(normalizedValues);
-      window.setTimeout(() => router.push("/book"), 900);
     } catch {
       setSubmitError(
         "Could not reach the application server. Please check your connection and try again.",
@@ -355,8 +321,14 @@ export function ApplicationForm() {
     return (
       <div className="py-20 text-center">
         <CheckCircle2 className="mx-auto h-12 w-12 text-[#73d9b0]" />
-        <h2 className="mt-5 text-3xl font-semibold">Application received.</h2>
-        <p className="mt-3 text-[#a9b0bd]">Taking you to the booking page...</p>
+        <h2 className="mt-5 text-3xl font-semibold">
+          Your Revenue Leak Map request has been received.
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-[#a9b0bd]">
+          I&apos;ll review your customer journey and send back the clearest
+          opportunity I can find. If it looks like there is a strong fit, I may
+          also include a short Loom breakdown.
+        </p>
       </div>
     );
   }
@@ -452,7 +424,7 @@ export function ApplicationForm() {
     </label>
   );
 
-  const checkboxGrid = (name: "tools" | "aiTools", options: string[]) => (
+  const checkboxGrid = (name: "leadSources", options: string[]) => (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {options.map((option) => (
         <label
@@ -501,10 +473,7 @@ export function ApplicationForm() {
     }
 
     if (currentQuestion.control === "select") {
-      const name = fieldName as
-        | "mainAction"
-        | "runningAds"
-        | "hasCrm";
+      const name = fieldName as "followUpSpeed";
 
       return (
         <label>
@@ -546,7 +515,7 @@ export function ApplicationForm() {
     }
 
     if (currentQuestion.control === "checkboxGrid") {
-      const name = fieldName as "tools" | "aiTools";
+      const name = fieldName as "leadSources";
 
       return (
         <fieldset>
@@ -577,7 +546,7 @@ export function ApplicationForm() {
               className="mt-1 accent-[#e5e2e1]"
             />
             I&apos;d like to receive occasional insights about improving
-            customer journeys, automation, and digital revenue systems.
+            customer journeys, follow-up, and digital revenue systems.
           </label>
         </div>
       );
@@ -652,7 +621,7 @@ export function ApplicationForm() {
             type="submit"
             className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-[#e8e5e2] px-7 text-sm font-bold text-[#151414] shadow-[0_14px_34px_rgba(0,0,0,0.26),inset_0_1px_0_rgba(255,255,255,0.75)] transition hover:-translate-y-0.5 hover:brightness-110 disabled:translate-y-0 disabled:opacity-50"
           >
-            {isSubmitting ? "Submitting..." : "Continue to Booking"}
+            {isSubmitting ? "Submitting..." : "Request My Free Leak Map"}
             <ArrowRight className="h-4 w-4" />
           </button>
         ) : (

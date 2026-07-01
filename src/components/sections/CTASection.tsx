@@ -3,8 +3,8 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 
 export function CTASection({
-  title = "Start With a Customer Journey Audit Call.",
-  body = "A focused fit call to understand your current journey, identify obvious leaks, and determine whether a paid Customer Journey Audit makes sense.",
+  title = "Get Your Free Revenue Leak Map.",
+  body = "Answer a few questions so Temporary Utopia can review where your current lead-to-customer journey may be leaking and what to fix first.",
 }: {
   title?: string;
   body?: string;
@@ -20,8 +20,8 @@ export function CTASection({
           <p className="mx-auto mt-6 max-w-2xl leading-7 text-[#aeb5c0]">
             {body}
           </p>
-          <ButtonLink href="/apply" className="mt-8">
-            Book Your Customer Journey Audit Call
+          <ButtonLink href="/#revenue-leak-map-form" className="mt-8">
+            Get My Free Revenue Leak Map
           </ButtonLink>
         </div>
       </GlassCard>
