@@ -11,7 +11,6 @@ import {
   FileSearch,
   Gauge,
   Hourglass,
-  Play,
   Smile,
   Frown,
   Star,
@@ -173,9 +172,9 @@ export default function CustomerJourneyRevenueSystemPage() {
       <SiteHeader withAnnouncement />
       <main>
         <Hero />
+        <Vsl />
         <LeakMapReviews />
         <Credibility />
-        <Vsl />
         <Letter />
         <LeakChecklist />
         <LeakMath />
@@ -405,31 +404,34 @@ function Vsl() {
             Inside Most Growing Businesses
           </p>
         </div>
-        <GlassCard className="group relative aspect-video cursor-pointer overflow-hidden rounded-3xl border-white/10">
+        <GlassCard className="relative aspect-video overflow-hidden rounded-3xl border-white/10 bg-black">
           <div className="pointer-events-none absolute -inset-px z-10 rounded-3xl bg-gradient-to-r from-cyan-200/20 via-transparent to-violet-300/20 opacity-50" />
-          <Image
-            src="/images/vsl-reference.png"
-            alt=""
-            fill
-            sizes="(max-width: 768px) 100vw, 1280px"
-            className="object-cover transition duration-700 group-hover:scale-[1.025]"
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/5Y0fNIkZ0YE?controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&playsinline=1&rel=0"
+            title="Audit Preview: How a messy journey becomes a priority fix list"
+            className="h-full w-full"
+            loading="lazy"
+            referrerPolicy="strict-origin-when-cross-origin"
+            sandbox="allow-scripts allow-same-origin allow-presentation"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           />
-          <div className="absolute inset-0 bg-[#141313]/60 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button
-              type="button"
-              aria-label="Play video placeholder"
-              className="grid h-20 w-20 place-items-center rounded-full bg-[#e5e2e1] text-[#141313] transition duration-300 group-hover:scale-110 md:h-24 md:w-24"
-            >
-              <Play className="ml-1 h-9 w-9 fill-current" />
-            </button>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#141313]/90 to-transparent p-6 md:p-8">
-            <p className="text-xl font-medium tracking-[-0.01em] text-white md:text-2xl">
-              Audit Preview: How a messy journey becomes a priority fix list
+        </GlassCard>
+        <div className="mt-5 flex flex-col gap-4 rounded-[1.5rem] border border-cyan-100/25 bg-gradient-to-r from-cyan-100/[.14] via-white/[.07] to-violet-200/[.14] p-4 text-center shadow-[0_0_44px_rgba(125,220,255,0.13)] sm:flex-row sm:items-center sm:justify-between sm:text-left md:mt-7 md:p-5">
+          <div>
+            <p className="text-lg font-semibold tracking-[-0.01em] text-white md:text-xl">
+              Want this mapped for your business?
+            </p>
+            <p className="mt-1 text-sm leading-6 text-[#c5c7c9]">
+              Apply in under 2 minutes and get a practical Revenue Leak Map.
             </p>
           </div>
-        </GlassCard>
+          <ButtonLink
+            href="#revenue-leak-map-form"
+            className="min-h-14 w-full px-6 py-4 text-base shadow-[0_0_28px_rgba(229,226,225,0.18)] sm:w-auto sm:shrink-0"
+          >
+            Get My Free Revenue Leak Map
+          </ButtonLink>
+        </div>
       </div>
     </section>
   );
